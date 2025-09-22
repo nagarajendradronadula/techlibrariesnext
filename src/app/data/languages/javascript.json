@@ -1,0 +1,36 @@
+{
+  "id": "javascript",
+  "name": "JavaScript",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png",
+  "description": "JavaScript is a high-level, versatile programming language primarily used for web development. Created by Brendan Eich in 1995 while working at Netscape Communications, JavaScript allows developers to implement complex features on web pages, including dynamic content updates, interactive forms, animations, and client-server communication. Over the years, it has evolved into a full-fledged, multi-paradigm language capable of supporting object-oriented, functional, and event-driven programming. JavaScript is executed in web browsers but can also run on servers through environments like Node.js, making it essential for full-stack development. Its ecosystem includes countless libraries and frameworks such as React, Angular, and Vue.js for front-end development, and Express, NestJS, and Koa for back-end applications. JavaScript’s syntax is influenced by C and Java, while its dynamic typing and prototype-based object model give it great flexibility. Its asynchronous capabilities, event loops, and Promise-based handling of operations make it highly suitable for modern web applications. The language has become foundational to web technologies alongside HTML and CSS, and its popularity continues to grow due to its universal presence on the web, ease of use, and extensive developer community.",
+  "story": "JavaScript was created by Brendan Eich at Netscape Communications in 1995, initially under the name Mocha, later renamed to LiveScript, and finally JavaScript to align with the marketing of Java, which was gaining popularity at the time. Eich developed the first version of JavaScript in just 10 days to provide web browsers with a lightweight, interpreted language that could enhance web pages with interactive functionality. JavaScript quickly became a standard for client-side scripting, enabling developers to manipulate the Document Object Model (DOM), handle events, and perform asynchronous operations via AJAX. Over the years, JavaScript evolved significantly, with the introduction of ECMAScript standards to formalize its syntax and features. ECMAScript editions such as ES5, ES6 (ES2015), and subsequent versions added classes, modules, arrow functions, template literals, async/await, and many other modern programming constructs. The rise of Node.js in 2009 allowed JavaScript to move beyond browsers and run on servers, making it a full-stack language and expanding its capabilities for enterprise and cloud applications. Modern JavaScript frameworks and libraries, including React, Angular, Vue.js, and Svelte, have revolutionized front-end development by enabling component-based architectures, reactive programming, and modular design patterns. JavaScript’s asynchronous programming model, event loop, and promise-based operations facilitate handling of I/O-intensive and real-time applications efficiently. The language continues to evolve with annual ECMAScript updates, ensuring it remains relevant, efficient, and aligned with modern software engineering practices. Its global community organizes conferences, maintains extensive documentation, and provides thousands of open-source tools, which support learning and development. JavaScript’s universality, flexibility, and active ecosystem make it indispensable for web developers, powering nearly every interactive feature on the web today.",
+  "official_docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+  "github": "",
+  "founders": [
+    {
+      "name": "Brendan Eich",
+      "image": "https://cdn.thenewstack.io/media/2018/08/f914bb7d-brendan_eich_mozilla_foundation_official_photo-by-darcy-padilla.jpg",
+      "twitter": "",
+      "linkedin": "https://www.linkedin.com/in/brendan-eich-9872364/",
+      "github": ""
+    }
+  ],
+  "use_cases": [
+    {
+      "company": "Facebook (Meta)",
+      "purpose": "Frontend and backend development (React framework)."
+    },
+    {
+      "company": "Google",
+      "purpose": "Frontend web applications, Angular framework, server-side with Node.js."
+    },
+    {
+      "company": "Netflix",
+      "purpose": "Frontend user interfaces, streaming apps."
+    },
+    {
+      "company": "PayPal",
+      "purpose": "Full-stack applications with Node.js and frontend web apps."
+    }
+  ]
+}

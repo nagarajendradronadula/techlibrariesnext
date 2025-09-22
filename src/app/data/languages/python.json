@@ -1,0 +1,36 @@
+{
+  "id": "python",
+  "name": "Python",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
+  "description": "Python is a high-level, interpreted programming language known for its simplicity, readability, and versatility. Developed in the late 1980s by Guido van Rossum, Python was designed to emphasize code readability and developer productivity. Over the decades, it has grown into one of the most widely used programming languages in the world, powering applications in web development, data science, artificial intelligence, scientific computing, automation, and more. Python's syntax is clean and expressive, making it accessible to beginners while still being powerful enough for large-scale professional software development. Its extensive standard library, combined with a rich ecosystem of third-party packages available via PyPI, allows developers to quickly build robust solutions for almost any domain. Python supports multiple programming paradigms, including procedural, object-oriented, and functional programming, offering flexibility and scalability for various types of projects. Its popularity is bolstered by a vibrant global community, comprehensive documentation, tutorials, conferences like PyCon, and widespread adoption in industry and academia. Python's influence is significant, shaping the design of many modern languages and software development practices.",
+  "story": "Python was created by Guido van Rossum at Centrum Wiskunde & Informatica (CWI) in the Netherlands during the late 1980s. Inspired by the ABC programming language, which aimed to be an educational tool for beginners but had several limitations, Guido wanted to create a language that combined ease of use with the power required for real-world programming tasks. The first public release, Python 0.9.0, appeared in 1991 and included key features such as exception handling, functions, and core data types like lists and dictionaries. Python's philosophy emphasizes code readability, simplicity, and explicitness, a philosophy formalized in the 'Zen of Python' which guides the language's development. Over the years, Python has evolved through major versions, adding features like object-oriented programming, modules, libraries for numerical computing, web frameworks, asynchronous programming, type annotations, and enhanced performance. Its role in scientific computing, data analysis, artificial intelligence, and machine learning is particularly notable, with libraries like NumPy, pandas, TensorFlow, and PyTorch empowering researchers and engineers to solve complex problems efficiently. Python's community-driven development ensures that it continues to adapt to modern programming challenges while maintaining backward compatibility and readability. Guido van Rossum served as Python's BDFL (Benevolent Dictator For Life) until 2018, providing consistent guidance to the language’s evolution. Python remains a top choice for beginners learning programming concepts, professionals building production-grade applications, and educators teaching computational thinking and coding skills. Its combination of readability, extensive libraries, active community, and versatility has made Python an enduring and influential programming language.",
+  "official_docs": "https://docs.python.org/3/",
+  "github": "https://github.com/python/cpython",
+  "founders": [
+    {
+      "name": "Guido van Rossum",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/6/66/Guido_van_Rossum_OSCON_2006.jpg",
+      "twitter": "https://twitter.com/gvanrossum",
+      "linkedin": "https://www.linkedin.com/in/gvanrossum/",
+      "github": "https://github.com/gvanrossum"
+    }
+  ],
+  "use_cases": [
+    {
+      "company": "Google",
+      "purpose": "Backend services, AI and machine learning frameworks, automation scripts."
+    },
+    {
+      "company": "Netflix",
+      "purpose": "Data analysis, recommendation algorithms, backend services."
+    },
+    {
+      "company": "Spotify",
+      "purpose": "Data analytics pipelines and machine learning."
+    },
+    {
+      "company": "Dropbox",
+      "purpose": "File storage backend, desktop client applications."
+    }
+  ]
+}

@@ -1,0 +1,2054 @@
+[
+    {
+      "id": "libcurl",
+      "name": "libcurl",
+      "category": "Web / Networking",
+      "description": "libcurl is a free and easy-to-use client-side URL transfer library, supporting a wide range of protocols including HTTP, HTTPS, FTP, and more. It allows sending and receiving data via URL requests with robust support for authentication, cookies, headers, and SSL.",
+      "story": "libcurl was created by Daniel Stenberg in 1997 to provide a portable and flexible library for network communication in C. It became widely adopted in both open-source and commercial applications due to its stability, performance, and support for multiple protocols.",
+      "installation": {
+        "linux": "sudo apt install libcurl4-openssl-dev",
+        "mac": "brew install curl",
+        "windows": "Download pre-built binaries from https://curl.se/windows/"
+      },
+      "usage": {
+        "overview": "libcurl provides easy-to-use functions to perform network operations like GET, POST, file upload, and download. It supports synchronous and asynchronous operations, SSL/TLS, cookies, authentication, and proxy support.",
+        "basic_examples": [
+          {
+            "title": "Simple GET request",
+            "code": "#include <curl/curl.h>\n#include <stdio.h>\n\nint main() {\n    CURL *curl = curl_easy_init();\n    if(curl) {\n        curl_easy_setopt(curl, CURLOPT_URL, \"https://httpbin.org/get\");\n        CURLcode res = curl_easy_perform(curl);\n        if(res != CURLE_OK)\n            fprintf(stderr, \"curl_easy_perform() failed: %s\\n\", curl_easy_strerror(res));\n        curl_easy_cleanup(curl);\n    }\n    return 0;\n}",
+            "explanation": "Initializes libcurl, sets the URL for a GET request, performs the request, and cleans up."
+          },
+          {
+            "title": "POST request with data",
+            "code": "#include <curl/curl.h>\n\nint main() {\n    CURL *curl = curl_easy_init();\n    if(curl) {\n        curl_easy_setopt(curl, CURLOPT_URL, \"https://httpbin.org/post\");\n        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, \"name=John&age=30\");\n        curl_easy_perform(curl);\n        curl_easy_cleanup(curl);\n    }\n    return 0;\n}",
+            "explanation": "Sends a POST request with URL-encoded form data using libcurl."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Handling response in memory",
+            "code": "#include <curl/curl.h>\n#include <stdlib.h>\n#include <string.h>\n\nsize_t write_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {\n    size_t total = size * nmemb;\n    strncat((char*)userdata, (char*)ptr, total);\n    return total;\n}\n\nint main() {\n    CURL *curl = curl_easy_init();\n    char response[10000] = {0};\n    curl_easy_setopt(curl, CURLOPT_URL, \"https://httpbin.org/get\");\n    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);\n    curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);\n    curl_easy_perform(curl);\n    printf(\"Response: %s\\n\", response);\n    curl_easy_cleanup(curl);\n    return 0;\n}",
+            "explanation": "Processes the response data in memory using a custom write callback."
+          },
+          {
+            "title": "HTTPS request with SSL verification",
+            "code": "curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);\ncurl_easy_setopt(curl, CURLOPT_CAINFO, \"/path/to/cacert.pem\");",
+            "explanation": "Ensures HTTPS requests verify the SSL certificate using a trusted CA."
+          },
+          {
+            "title": "Setting custom headers",
+            "code": "struct curl_slist *headers = NULL;\nheaders = curl_slist_append(headers, \"Authorization: Bearer TOKEN\");\ncurl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);",
+            "explanation": "Adds custom HTTP headers for requests, e.g., for API authentication."
+          },
+          {
+            "title": "File download",
+            "code": "FILE *fp = fopen(\"file.txt\", \"wb\");\ncurl_easy_setopt(curl, CURLOPT_URL, \"https://example.com/file.txt\");\ncurl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);\ncurl_easy_perform(curl);\nfclose(fp);",
+            "explanation": "Downloads a remote file and saves it locally."
+          }
+        ],
+        "best_practices": [
+          "Always check the return code of `curl_easy_perform` for error handling.",
+          "Clean up CURL handles with `curl_easy_cleanup` to prevent memory leaks.",
+          "Use `curl_global_init` and `curl_global_cleanup` at the start and end of your program if using libcurl in multi-threaded applications.",
+          "Use timeouts and retries for robust network operations.",
+          "Separate headers and POST data to improve readability and maintainability."
+        ],
+        "error_handling": [
+          {
+            "error": "CURLE_COULDNT_CONNECT",
+            "solution": "Check network connectivity and server availability."
+          },
+          {
+            "error": "CURLE_OPERATION_TIMEDOUT",
+            "solution": "Set proper timeout using `curl_easy_setopt(curl, CURLOPT_TIMEOUT, seconds)`."
+          },
+          {
+            "error": "CURLE_SSL_CONNECT_ERROR",
+            "solution": "Verify SSL certificates and use `CURLOPT_CAINFO` with a valid CA bundle."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://curl.se/libcurl/",
+        "github": "https://github.com/curl/curl"
+      }
+    },
+    {
+      "id": "openssl",
+      "name": "OpenSSL",
+      "category": "Security / Cryptography",
+      "description": "OpenSSL is a robust, full-featured open-source toolkit implementing the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) protocols. It provides cryptographic functions such as encryption, decryption, hashing, key generation, and certificate management.",
+      "story": "OpenSSL was originally developed in 1998 and has become the de facto standard library for implementing secure communications in C/C++ applications. It is widely used in web servers, email servers, VPNs, and many security-sensitive software systems for encryption and certificate management.",
+      "installation": {
+        "linux": "sudo apt install libssl-dev",
+        "mac": "brew install openssl",
+        "windows": "Download pre-built binaries from https://slproweb.com/products/Win32OpenSSL.html"
+      },
+      "usage": {
+        "overview": "OpenSSL provides APIs for symmetric and asymmetric encryption, digital signatures, hashing, SSL/TLS communication, and certificate handling. It supports a wide range of cryptographic algorithms including AES, RSA, ECC, SHA, and HMAC.",
+        "basic_examples": [
+          {
+            "title": "Generating an RSA key",
+            "code": "#include <openssl/rsa.h>\n#include <openssl/pem.h>\n\nint main() {\n    RSA *rsa = RSA_generate_key(2048, RSA_F4, NULL, NULL);\n    FILE *fp = fopen(\"private.pem\", \"wb\");\n    PEM_write_RSAPrivateKey(fp, rsa, NULL, NULL, 0, NULL, NULL);\n    fclose(fp);\n    RSA_free(rsa);\n    return 0;\n}",
+            "explanation": "Generates a 2048-bit RSA key and saves it as a PEM file."
+          },
+          {
+            "title": "Computing a SHA-256 hash",
+            "code": "#include <openssl/sha.h>\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    unsigned char digest[SHA256_DIGEST_LENGTH];\n    char str[] = \"Hello, OpenSSL!\";\n    SHA256((unsigned char*)str, strlen(str), digest);\n    for(int i = 0; i < SHA256_DIGEST_LENGTH; i++)\n        printf(\"%02x\", digest[i]);\n    printf(\"\\n\");\n    return 0;\n}",
+            "explanation": "Calculates and prints the SHA-256 hash of a string."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "AES-256-CBC encryption",
+            "code": "#include <openssl/evp.h>\n#include <string.h>\n#include <stdio.h>\n\nint main() {\n    unsigned char key[32] = \"01234567890123456789012345678901\";\n    unsigned char iv[16] = \"0123456789012345\";\n    unsigned char plaintext[] = \"Hello, OpenSSL AES!\";\n    unsigned char ciphertext[128];\n    int len, ciphertext_len;\n\n    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();\n    EVP_EncryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);\n    EVP_EncryptUpdate(ctx, ciphertext, &len, plaintext, strlen((char*)plaintext));\n    ciphertext_len = len;\n    EVP_EncryptFinal_ex(ctx, ciphertext + len, &len);\n    ciphertext_len += len;\n    EVP_CIPHER_CTX_free(ctx);\n\n    printf(\"Encrypted text length: %d\\n\", ciphertext_len);\n    return 0;\n}",
+            "explanation": "Encrypts a plaintext string using AES-256-CBC mode with a given key and IV."
+          },
+          {
+            "title": "Digital signature using RSA",
+            "code": "#include <openssl/rsa.h>\n#include <openssl/pem.h>\n#include <openssl/err.h>\n#include <openssl/sha.h>\n\nint main() {\n    // Load private key\n    FILE *fp = fopen(\"private.pem\", \"r\");\n    RSA *rsa = PEM_read_RSAPrivateKey(fp, NULL, NULL, NULL);\n    fclose(fp);\n\n    unsigned char msg[] = \"Hello\";\n    unsigned char sig[256];\n    unsigned int sig_len;\n\n    SHA256(msg, strlen((char*)msg), sig);\n    RSA_sign(NID_sha256, sig, SHA256_DIGEST_LENGTH, sig, &sig_len, rsa);\n    RSA_free(rsa);\n\n    printf(\"Signature length: %u\\n\", sig_len);\n    return 0;\n}",
+            "explanation": "Generates a digital signature of a message using RSA and SHA-256."
+          },
+          {
+            "title": "SSL/TLS client connection",
+            "code": "#include <openssl/ssl.h>\n#include <openssl/err.h>\n\nint main() {\n    SSL_library_init();\n    SSL_CTX *ctx = SSL_CTX_new(TLS_client_method());\n    SSL *ssl = SSL_new(ctx);\n    // connect socket code omitted for brevity\n    SSL_connect(ssl);\n    SSL_shutdown(ssl);\n    SSL_free(ssl);\n    SSL_CTX_free(ctx);\n    return 0;\n}",
+            "explanation": "Sets up a TLS client using OpenSSL. You can then connect to a server securely over SSL/TLS."
+          }
+        ],
+        "best_practices": [
+          "Always check return values for errors to ensure cryptographic operations succeed.",
+          "Use updated and recommended algorithms (e.g., AES, SHA-256, RSA-2048+).",
+          "Securely store private keys and sensitive data in memory or protected files.",
+          "Use random number generators from OpenSSL for key generation.",
+          "Keep OpenSSL library updated to patch security vulnerabilities."
+        ],
+        "error_handling": [
+          {
+            "error": "NULL pointer or allocation failure",
+            "solution": "Check function return values and handle memory allocation errors."
+          },
+          {
+            "error": "SSL handshake failure",
+            "solution": "Verify certificates, protocols, and cipher suites are compatible."
+          },
+          {
+            "error": "Digest or signature function fails",
+            "solution": "Ensure correct key size, padding, and hash algorithm usage."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.openssl.org/docs/",
+        "github": "https://github.com/openssl/openssl"
+      }
+    },
+    {
+      "id": "zlib",
+      "name": "zlib",
+      "category": "Compression / Data",
+      "description": "zlib is a general-purpose, lossless data compression library written in C. It provides in-memory compression and decompression functions using the widely used DEFLATE algorithm, suitable for various applications including file compression, network protocols, and data storage.",
+      "story": "zlib was created by Jean-loup Gailly and Mark Adler in 1995. Its goal was to provide a free, efficient, and portable compression library that could be used across platforms. It has become one of the most widely used libraries for data compression in software development, forming the basis for formats like gzip and PNG.",
+      "installation": {
+        "linux": "sudo apt install zlib1g-dev",
+        "mac": "brew install zlib",
+        "windows": "Download precompiled binaries or build from source at https://zlib.net/"
+      },
+      "usage": {
+        "overview": "zlib provides functions for compressing and decompressing data buffers in memory, reading and writing compressed files, and integrating with network protocols. It supports both streaming and one-shot compression/decompression operations.",
+        "basic_examples": [
+          {
+            "title": "Compressing a string in memory",
+            "code": "#include <stdio.h>\n#include <string.h>\n#include <zlib.h>\n\nint main() {\n    char input[] = \"Hello, zlib compression!\";\n    unsigned char compressed[100];\n    uLongf compressed_len = sizeof(compressed);\n\n    if (compress(compressed, &compressed_len, (const unsigned char*)input, strlen(input)+1) == Z_OK) {\n        printf(\"Compressed length: %lu\\n\", compressed_len);\n    }\n    return 0;\n}",
+            "explanation": "Compresses a C string into a memory buffer using `compress()`."
+          },
+          {
+            "title": "Decompressing a string in memory",
+            "code": "#include <stdio.h>\n#include <string.h>\n#include <zlib.h>\n\nint main() {\n    unsigned char compressed[] = { /* compressed data */ };\n    unsigned char decompressed[100];\n    uLongf decompressed_len = sizeof(decompressed);\n\n    if (uncompress(decompressed, &decompressed_len, compressed, sizeof(compressed)) == Z_OK) {\n        printf(\"Decompressed string: %s\\n\", decompressed);\n    }\n    return 0;\n}",
+            "explanation": "Decompresses a memory buffer back into the original string using `uncompress()`."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using zlib streams for large data",
+            "code": "#include <stdio.h>\n#include <zlib.h>\n\nint main() {\n    z_stream strm = {0};\n    deflateInit(&strm, Z_BEST_COMPRESSION);\n    // Feed data to strm.next_in and strm.avail_in\n    // Retrieve compressed data from strm.next_out\n    deflateEnd(&strm);\n    return 0;\n}",
+            "explanation": "Shows how to use `z_stream` and `deflateInit` for streaming compression of large datasets."
+          },
+          {
+            "title": "Writing a gzip file",
+            "code": "#include <zlib.h>\n#include <stdio.h>\n\nint main() {\n    gzFile file = gzopen(\"output.gz\", \"wb\");\n    gzwrite(file, \"Hello gzip!\", 11);\n    gzclose(file);\n    return 0;\n}",
+            "explanation": "Creates a gzip-compressed file and writes data to it using zlib’s `gzFile` API."
+          },
+          {
+            "title": "Reading a gzip file",
+            "code": "#include <zlib.h>\n#include <stdio.h>\n\nint main() {\n    char buffer[100];\n    gzFile file = gzopen(\"output.gz\", \"rb\");\n    int bytes = gzread(file, buffer, sizeof(buffer)-1);\n    buffer[bytes] = '\\0';\n    printf(\"Read: %s\\n\", buffer);\n    gzclose(file);\n    return 0;\n}",
+            "explanation": "Opens a gzip file, reads its contents, and prints the decompressed data."
+          }
+        ],
+        "best_practices": [
+          "Always check return codes for errors (Z_OK, Z_MEM_ERROR, Z_BUF_ERROR, etc.).",
+          "Use streaming APIs (`z_stream`) for large or continuous data instead of one-shot functions.",
+          "Release any resources using `deflateEnd()` or `inflateEnd()` to prevent memory leaks.",
+          "Choose compression levels based on performance vs. size trade-offs (Z_BEST_SPEED, Z_BEST_COMPRESSION).",
+          "Ensure the destination buffer is large enough to hold compressed or decompressed data."
+        ],
+        "error_handling": [
+          {
+            "error": "Z_MEM_ERROR",
+            "solution": "Occurs when zlib cannot allocate enough memory. Reduce buffer size or free memory."
+          },
+          {
+            "error": "Z_BUF_ERROR",
+            "solution": "The output buffer is too small. Increase the size of the destination buffer."
+          },
+          {
+            "error": "Z_DATA_ERROR",
+            "solution": "The input data is corrupted or incomplete. Verify source data integrity."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://zlib.net/manual.html",
+        "github": "https://github.com/madler/zlib"
+      }
+    },
+    {
+      "id": "xlib",
+      "name": "Xlib",
+      "category": "GUI / Windowing",
+      "description": "Xlib is the standard C library for interfacing with the X Window System (X11) on Unix-like operating systems. It allows applications to create and manage windows, handle user input events, draw graphics, and communicate with the X server.",
+      "story": "Xlib was developed in the mid-1980s as the primary client library for X11. It provides a low-level interface to X server operations, allowing developers to build graphical applications directly. Although higher-level toolkits like GTK and Qt are more commonly used today, Xlib is still valuable for lightweight, custom, or embedded X11 applications.",
+      "installation": {
+        "linux": "sudo apt install libx11-dev",
+        "mac": "Install XQuartz to get X11 headers and libraries",
+        "windows": "Xlib is mainly for Unix-like systems; use Cygwin/X or similar for Windows"
+      },
+      "usage": {
+        "overview": "Xlib enables C programs to open a connection to the X server, create windows, manage events like keyboard and mouse inputs, and draw graphics primitives such as lines, rectangles, and text.",
+        "basic_examples": [
+          {
+            "title": "Opening a display and creating a simple window",
+            "code": "#include <X11/Xlib.h>\n#include <stdio.h>\n#include <stdlib.h>\n\nint main() {\n    Display *d;\n    Window w;\n    XEvent e;\n    int s;\n\n    d = XOpenDisplay(NULL);\n    if (d == NULL) {\n        fprintf(stderr, \"Cannot open display\\n\");\n        exit(1);\n    }\n\n    s = DefaultScreen(d);\n    w = XCreateSimpleWindow(d, RootWindow(d, s), 10, 10, 200, 200, 1,\n                            BlackPixel(d, s), WhitePixel(d, s));\n    XSelectInput(d, w, ExposureMask | KeyPressMask);\n    XMapWindow(d, w);\n\n    while (1) {\n        XNextEvent(d, &e);\n        if (e.type == Expose) {\n            XFillRectangle(d, w, DefaultGC(d, s), 20, 20, 10, 10);\n        }\n        if (e.type == KeyPress)\n            break;\n    }\n\n    XCloseDisplay(d);\n    return 0;\n}",
+            "explanation": "Opens a connection to the X server, creates a window, listens for expose and keypress events, draws a rectangle, and closes the display."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Drawing graphics primitives",
+            "code": "#include <X11/Xlib.h>\n\n// Use functions like XDrawLine, XDrawRectangle, XDrawArc to draw shapes on a window",
+            "explanation": "Demonstrates low-level drawing operations using Xlib functions to create lines, rectangles, circles, and arcs."
+          },
+          {
+            "title": "Handling multiple events",
+            "code": "// Use XSelectInput to listen for multiple event types such as KeyPressMask, ButtonPressMask, ExposureMask\n// Use XNextEvent to process events in an event loop",
+            "explanation": "Allows handling of keyboard, mouse, and window events in a single loop efficiently."
+          },
+          {
+            "title": "Font and text rendering",
+            "code": "// Use XLoadFont and XDrawString to draw text on windows with Xlib",
+            "explanation": "Enables rendering text with specific fonts and coordinates in a window."
+          }
+        ],
+        "best_practices": [
+          "Always check the return values of Xlib functions to catch errors early.",
+          "Use event masks efficiently to avoid unnecessary event handling overhead.",
+          "Close the Display connection using XCloseDisplay to release resources.",
+          "Consider using higher-level toolkits like GTK or Qt for complex GUI applications.",
+          "Separate event handling and drawing logic for maintainability."
+        ],
+        "error_handling": [
+          {
+            "error": "Cannot open display",
+            "solution": "Ensure the DISPLAY environment variable is set correctly and an X server is running."
+          },
+          {
+            "error": "BadWindow or BadDrawable",
+            "solution": "Verify that the window or drawable exists before performing drawing operations."
+          },
+          {
+            "error": "Font loading failure",
+            "solution": "Check that the specified font exists on the system and the name is correct."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.x.org/releases/current/doc/libX11/libX11/libX11.html",
+        "github": "https://gitlab.freedesktop.org/xorg/lib/libx11"
+      }
+    },
+    {
+      "id": "sqlite",
+      "name": "SQLite",
+      "category": "Data / Database",
+      "description": "SQLite is a self-contained, serverless, zero-configuration, transactional SQL database engine. It is embedded in Python via the built-in `sqlite3` module, making it easy to store and query relational data without requiring a separate database server.",
+      "story": "SQLite was created in 2000 by D. Richard Hipp. Its goal was to provide a lightweight, reliable, and portable SQL database engine that can be embedded in applications. It has become one of the most widely deployed databases in the world, powering applications from browsers to embedded devices.",
+      "installation": {
+        "pip": "Built-in with Python (no installation required)",
+        "conda": "Included in standard Python distributions"
+      },
+      "usage": {
+        "overview": "Python's `sqlite3` module allows you to create SQLite databases, execute SQL queries, and manage transactions. It supports standard SQL syntax, parameterized queries, and in-memory databases for temporary storage.",
+        "basic_examples": [
+          {
+            "title": "Creating a database and table",
+            "code": "import sqlite3\nconn = sqlite3.connect('example.db')\ncursor = conn.cursor()\ncursor.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)''')\nconn.commit()\nconn.close()",
+            "explanation": "Creates an SQLite database file `example.db` and a `users` table if it doesn’t exist."
+          },
+          {
+            "title": "Inserting data",
+            "code": "import sqlite3\nconn = sqlite3.connect('example.db')\ncursor = conn.cursor()\ncursor.execute(\"INSERT INTO users (name, age) VALUES (?,?)\", ('Alice', 25))\nconn.commit()\nconn.close()",
+            "explanation": "Inserts a row into the `users` table using a parameterized query to prevent SQL injection."
+          },
+          {
+            "title": "Querying data",
+            "code": "import sqlite3\nconn = sqlite3.connect('example.db')\ncursor = conn.cursor()\ncursor.execute('SELECT * FROM users')\nrows = cursor.fetchall()\nfor row in rows:\n    print(row)\nconn.close()",
+            "explanation": "Fetches all rows from the `users` table and prints them."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Updating data",
+            "code": "cursor.execute('UPDATE users SET age = ? WHERE name = ?', (26, 'Alice'))\nconn.commit()",
+            "explanation": "Updates the age of the user named Alice."
+          },
+          {
+            "title": "Deleting data",
+            "code": "cursor.execute('DELETE FROM users WHERE name = ?', ('Alice',))\nconn.commit()",
+            "explanation": "Deletes the user named Alice from the table."
+          },
+          {
+            "title": "Using in-memory database",
+            "code": "conn = sqlite3.connect(':memory:')",
+            "explanation": "Creates a temporary database in RAM, useful for testing or temporary data storage."
+          },
+          {
+            "title": "Using transactions and context manager",
+            "code": "with sqlite3.connect('example.db') as conn:\n    cursor = conn.cursor()\n    cursor.execute('INSERT INTO users (name, age) VALUES (?,?)', ('Bob', 30))",
+            "explanation": "Uses a context manager to automatically commit transactions and close the connection safely."
+          }
+        ],
+        "best_practices": [
+          "Always use parameterized queries to prevent SQL injection.",
+          "Use context managers (`with` statement) for automatic connection handling.",
+          "Commit transactions to save changes, and rollback in case of errors.",
+          "Use indexes on columns that are frequently queried for better performance.",
+          "Avoid storing large binary data directly; use BLOBs carefully or external files."
+        ],
+        "error_handling": [
+          {
+            "error": "sqlite3.OperationalError",
+            "solution": "Check SQL syntax, table existence, or database lock issues."
+          },
+          {
+            "error": "sqlite3.IntegrityError",
+            "solution": "Occurs when violating primary key or unique constraints. Ensure data integrity."
+          },
+          {
+            "error": "sqlite3.DatabaseError",
+            "solution": "General database error. Check connection, permissions, and file paths."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://docs.python.org/3/library/sqlite3.html",
+        "github": "https://www.sqlite.org/index.html"
+      }
+    },
+    {
+      "id": "libxml2",
+      "name": "libxml2",
+      "category": "XML / Parsing",
+      "description": "libxml2 is a C library for parsing XML documents. It provides a comprehensive set of functions for reading, validating, navigating, and manipulating XML data efficiently, and supports standards like XPath, XInclude, and XPointer.",
+      "story": "libxml2 was developed as part of the GNOME project and has become the standard library for XML parsing in C applications. It is widely used in software ranging from desktop applications to web services that require robust XML processing.",
+      "installation": {
+        "linux": "sudo apt install libxml2-dev",
+        "mac": "brew install libxml2",
+        "windows": "Download precompiled binaries from http://xmlsoft.org/sources/"
+      },
+      "usage": {
+        "overview": "libxml2 allows developers to parse XML documents either in memory or from files, traverse XML trees, extract information with XPath, validate against DTD or XML Schema, and modify XML content programmatically.",
+        "basic_examples": [
+          {
+            "title": "Parsing an XML file",
+            "code": "#include <libxml/parser.h>\n#include <libxml/tree.h>\n#include <stdio.h>\n\nint main() {\n    xmlDoc *doc = xmlReadFile(\"example.xml\", NULL, 0);\n    if (doc == NULL) {\n        printf(\"Failed to parse XML\\n\");\n        return 1;\n    }\n    xmlFreeDoc(doc);\n    xmlCleanupParser();\n    return 0;\n}",
+            "explanation": "Reads an XML file into memory and checks for successful parsing."
+          },
+          {
+            "title": "Accessing root element",
+            "code": "xmlNode *root = xmlDocGetRootElement(doc);\nprintf(\"Root element: %s\\n\", root->name);",
+            "explanation": "Retrieves the root element of an XML document and prints its tag name."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Iterating over child nodes",
+            "code": "for(xmlNode *node = root->children; node; node = node->next) {\n    if(node->type == XML_ELEMENT_NODE)\n        printf(\"Node name: %s\\n\", node->name);\n}",
+            "explanation": "Loops through all child nodes of the root element and prints element names."
+          },
+          {
+            "title": "Using XPath",
+            "code": "#include <libxml/xpath.h>\nxmlXPathContextPtr xpathCtx = xmlXPathNewContext(doc);\nxmlXPathObjectPtr xpathObj = xmlXPathEvalExpression((xmlChar*)\"//book\", xpathCtx);\nfor(int i=0; i < xpathObj->nodesetval->nodeNr; i++) {\n    xmlNodePtr node = xpathObj->nodesetval->nodeTab[i];\n    printf(\"Book node: %s\\n\", node->name);\n}\nxmlXPathFreeObject(xpathObj);\nxmlXPathFreeContext(xpathCtx);",
+            "explanation": "Uses XPath to select all `<book>` elements in the document."
+          },
+          {
+            "title": "Modifying XML nodes",
+            "code": "xmlNodePtr newNode = xmlNewChild(root, NULL, (xmlChar*)\"author\", (xmlChar*)\"John Doe\");",
+            "explanation": "Adds a new child node `<author>` with text content to the root element."
+          },
+          {
+            "title": "Validating against a DTD",
+            "code": "xmlValidCtxtPtr ctxt = xmlNewValidCtxt();\nint ret = xmlValidateDocument(ctxt, doc);\nxmlFreeValidCtxt(ctxt);",
+            "explanation": "Validates the XML document against a DTD and returns success or failure."
+          }
+        ],
+        "best_practices": [
+          "Always call `xmlCleanupParser()` before exiting to release memory.",
+          "Check return values when parsing or modifying XML to handle errors.",
+          "Use UTF-8 encoding for XML strings to avoid character issues.",
+          "Free documents with `xmlFreeDoc()` after use to prevent memory leaks.",
+          "Use XPath for efficient element selection instead of manual tree traversal."
+        ],
+        "error_handling": [
+          {
+            "error": "xmlReadFile returns NULL",
+            "solution": "Check that the file exists, is readable, and contains valid XML."
+          },
+          {
+            "error": "Invalid XPath expression",
+            "solution": "Ensure the XPath syntax is correct and matches the XML structure."
+          },
+          {
+            "error": "Memory leaks",
+            "solution": "Always free documents, nodes, and contexts after use."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "http://xmlsoft.org/",
+        "github": "https://gitlab.gnome.org/GNOME/libxml2"
+      }
+    },
+    {
+      "id": "jansson",
+      "name": "Jansson",
+      "category": "Data / JSON",
+      "description": "Jansson is a C library for encoding, decoding, and manipulating JSON data. It provides simple and intuitive APIs to parse JSON strings, build JSON objects, arrays, and write JSON to files or memory.",
+      "story": "Jansson was created to provide a lightweight and easy-to-use library for handling JSON in C. It is designed with safety, clarity, and portability in mind, making it popular in C projects that require JSON parsing, configuration files, or data exchange with web services.",
+      "installation": {
+        "linux": "sudo apt install libjansson-dev",
+        "mac": "brew install jansson",
+        "windows": "Download precompiled binaries from https://digip.org/jansson/"
+      },
+      "usage": {
+        "overview": "Jansson allows you to parse JSON strings into objects, manipulate them (add/remove keys, iterate arrays), and serialize JSON objects back into strings or files. It handles memory management safely and supports Unicode.",
+        "basic_examples": [
+          {
+            "title": "Parsing a JSON string",
+            "code": "#include <jansson.h>\n#include <stdio.h>\n\nint main() {\n    const char *text = \"{\\\"name\\\": \\\"Alice\\\", \\\"age\\\": 30}\";\n    json_error_t error;\n    json_t *root = json_loads(text, 0, &error);\n    if(!root) {\n        fprintf(stderr, \"Error parsing JSON: %s\\n\", error.text);\n        return 1;\n    }\n    const char *name = json_string_value(json_object_get(root, \"name\"));\n    printf(\"Name: %s\\n\", name);\n    json_decref(root);\n    return 0;\n}",
+            "explanation": "Parses a JSON string into a `json_t` object, retrieves the 'name' value, prints it, and frees memory."
+          },
+          {
+            "title": "Creating a JSON object",
+            "code": "#include <jansson.h>\n\njson_t *root = json_object();\njson_object_set_new(root, \"name\", json_string(\"Bob\"));\njson_object_set_new(root, \"age\", json_integer(25));\nchar *text = json_dumps(root, JSON_INDENT(2));\nprintf(\"%s\\n\", text);\nfree(text);\njson_decref(root);",
+            "explanation": "Builds a JSON object programmatically, serializes it as a string, prints it, and frees memory."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Iterating over JSON objects",
+            "code": "const char *key;\njson_t *value;\njson_object_foreach(root, key, value) {\n    printf(\"%s: %s\\n\", key, json_string_value(value));\n}",
+            "explanation": "Iterates over all key-value pairs in a JSON object."
+          },
+          {
+            "title": "Working with JSON arrays",
+            "code": "json_t *arr = json_array();\njson_array_append_new(arr, json_string(\"apple\"));\njson_array_append_new(arr, json_string(\"banana\"));\nfor(size_t i = 0; i < json_array_size(arr); i++) {\n    printf(\"%s\\n\", json_string_value(json_array_get(arr, i)));\n}\njson_decref(arr);",
+            "explanation": "Creates a JSON array, appends items, iterates over them, and frees memory."
+          },
+          {
+            "title": "Writing JSON to file",
+            "code": "FILE *fp = fopen(\"data.json\", \"w\");\njson_dumpf(root, fp, JSON_INDENT(2));\nfclose(fp);",
+            "explanation": "Writes a JSON object to a file in a human-readable format."
+          },
+          {
+            "title": "Parsing JSON from file",
+            "code": "json_error_t error;\njson_t *root = json_load_file(\"data.json\", 0, &error);",
+            "explanation": "Loads a JSON object directly from a file and handles parsing errors."
+          }
+        ],
+        "best_practices": [
+          "Always check the return value of `json_loads` or `json_load_file` to catch parsing errors.",
+          "Use `json_decref` to free JSON objects when no longer needed.",
+          "Prefer `json_object_set_new` and `json_array_append_new` to automatically manage memory for new items.",
+          "Use `json_dumps` or `json_dumpf` with indentation options for readable JSON output.",
+          "Handle Unicode strings carefully; Jansson internally uses UTF-8 encoding."
+        ],
+        "error_handling": [
+          {
+            "error": "JSON parsing error",
+            "solution": "Inspect `json_error_t` for line and column information to fix invalid JSON syntax."
+          },
+          {
+            "error": "Memory leaks",
+            "solution": "Always decrement references using `json_decref` for each `json_t` object created."
+          },
+          {
+            "error": "Type mismatch",
+            "solution": "Use functions like `json_is_string`, `json_is_integer`, etc., before extracting values to avoid invalid type access."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://jansson.readthedocs.io/en/latest/",
+        "github": "https://github.com/akheron/jansson"
+      }
+    },
+    {
+      "id": "cjson",
+      "name": "cJSON",
+      "category": "Data / JSON",
+      "description": "cJSON is a lightweight C library for parsing, printing, and manipulating JSON data. It is designed to be simple, fast, and portable, making it ideal for embedded systems and performance-critical applications.",
+      "story": "cJSON was created by Dave Gamble to provide a minimalistic, easy-to-use C library for handling JSON data. It is widely used in projects that need a small footprint and fast JSON parsing without external dependencies.",
+      "installation": {
+        "linux": "sudo apt install libcjson-dev",
+        "mac": "brew install cjson",
+        "windows": "Download source code from https://github.com/DaveGamble/cJSON and compile manually"
+      },
+      "usage": {
+        "overview": "cJSON allows you to parse JSON strings into C structures, traverse and modify JSON objects and arrays, and serialize them back into strings or files. It is suitable for both simple and complex JSON handling.",
+        "basic_examples": [
+          {
+            "title": "Parsing a JSON string",
+            "code": "#include <stdio.h>\n#include <cjson/cJSON.h>\n\nint main() {\n    const char *text = \"{\\\"name\\\":\\\"Alice\\\",\\\"age\\\":30}\";\n    cJSON *root = cJSON_Parse(text);\n    if (!root) {\n        printf(\"Error parsing JSON\\n\");\n        return 1;\n    }\n    cJSON *name = cJSON_GetObjectItem(root, \"name\");\n    printf(\"Name: %s\\n\", name->valuestring);\n    cJSON_Delete(root);\n    return 0;\n}",
+            "explanation": "Parses a JSON string, retrieves the 'name' value, prints it, and frees memory."
+          },
+          {
+            "title": "Creating a JSON object",
+            "code": "#include <cjson/cJSON.h>\n\ncJSON *root = cJSON_CreateObject();\ncJSON_AddStringToObject(root, \"name\", \"Bob\");\ncJSON_AddNumberToObject(root, \"age\", 25);\nchar *text = cJSON_Print(root);\nprintf(\"%s\\n\", text);\ncJSON_free(text);\ncJSON_Delete(root);",
+            "explanation": "Creates a JSON object programmatically, prints it as a string, and frees memory."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Working with JSON arrays",
+            "code": "cJSON *arr = cJSON_CreateArray();\ncJSON_AddItemToArray(arr, cJSON_CreateString(\"apple\"));\ncJSON_AddItemToArray(arr, cJSON_CreateString(\"banana\"));\nfor(int i = 0; i < cJSON_GetArraySize(arr); i++) {\n    cJSON *item = cJSON_GetArrayItem(arr, i);\n    printf(\"%s\\n\", item->valuestring);\n}\ncJSON_Delete(arr);",
+            "explanation": "Creates a JSON array, adds elements, iterates over them, and deletes the array."
+          },
+          {
+            "title": "Modifying JSON objects",
+            "code": "cJSON_ReplaceItemInObject(root, \"age\", cJSON_CreateNumber(26));",
+            "explanation": "Replaces the value of an existing key in a JSON object."
+          },
+          {
+            "title": "Writing JSON to a file",
+            "code": "FILE *fp = fopen(\"data.json\", \"w\");\nfputs(cJSON_Print(root), fp);\nfclose(fp);",
+            "explanation": "Serializes a JSON object and writes it to a file."
+          },
+          {
+            "title": "Parsing JSON from a file",
+            "code": "FILE *fp = fopen(\"data.json\", \"r\");\nfseek(fp, 0, SEEK_END);\nlong length = ftell(fp);\nfseek(fp, 0, SEEK_SET);\nchar *data = malloc(length + 1);\nfread(data, 1, length, fp);\ndata[length] = '\\0';\ncJSON *root = cJSON_Parse(data);\nfree(data);\nfclose(fp);",
+            "explanation": "Reads a JSON file into memory, parses it, and handles cleanup."
+          }
+        ],
+        "best_practices": [
+          "Always check return values from `cJSON_Parse` to handle parsing errors.",
+          "Use `cJSON_Delete` to free memory after creating or parsing objects.",
+          "Use `cJSON_AddItemToObject` and `cJSON_AddItemToArray` to manage memory automatically.",
+          "Use `cJSON_Print` or `cJSON_PrintBuffered` for serializing JSON to strings.",
+          "Avoid memory leaks by freeing both JSON objects and allocated strings properly."
+        ],
+        "error_handling": [
+          {
+            "error": "cJSON_Parse returns NULL",
+            "solution": "Check JSON syntax and ensure the input string is valid."
+          },
+          {
+            "error": "Invalid type access",
+            "solution": "Use type checking functions like `cJSON_IsString`, `cJSON_IsNumber` before accessing values."
+          },
+          {
+            "error": "Memory leaks",
+            "solution": "Always call `cJSON_Delete` on allocated JSON objects and free printed strings."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://github.com/DaveGamble/cJSON",
+        "github": "https://github.com/DaveGamble/cJSON"
+      }
+    },
+    {
+      "id": "sdl2",
+      "name": "SDL2",
+      "category": "Multimedia / Graphics",
+      "description": "SDL2 (Simple DirectMedia Layer 2) is a cross-platform C library for handling multimedia, input devices, 2D graphics, audio, and game controller support. It is widely used for game development, emulators, and interactive applications.",
+      "story": "SDL2 was developed by Sam Lantinga in 1998 to provide a simple and portable interface to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D. SDL2 improved upon SDL1.2 with enhanced support for modern hardware, multiple windows, and better input handling. It is the foundation for many games, engines, and emulators.",
+      "installation": {
+        "linux": "sudo apt install libsdl2-dev",
+        "mac": "brew install sdl2",
+        "windows": "Download development libraries from https://www.libsdl.org/download-2.0.php and configure your compiler"
+      },
+      "usage": {
+        "overview": "SDL2 allows you to create windows, render graphics, handle events (keyboard, mouse, joystick), play audio, and manage timers. It provides both a low-level interface and integration with OpenGL/Direct3D for hardware-accelerated graphics.",
+        "basic_examples": [
+          {
+            "title": "Initializing SDL and creating a window",
+            "code": "#include <SDL2/SDL.h>\n#include <stdio.h>\n\nint main() {\n    if (SDL_Init(SDL_INIT_VIDEO) != 0) {\n        printf(\"SDL_Init Error: %s\\n\", SDL_GetError());\n        return 1;\n    }\n\n    SDL_Window *win = SDL_CreateWindow(\"Hello SDL2\", 100, 100, 640, 480, SDL_WINDOW_SHOWN);\n    if (win == NULL) {\n        printf(\"SDL_CreateWindow Error: %s\\n\", SDL_GetError());\n        SDL_Quit();\n        return 1;\n    }\n\n    SDL_Delay(3000); // Display window for 3 seconds\n    SDL_DestroyWindow(win);\n    SDL_Quit();\n    return 0;\n}",
+            "explanation": "Initializes SDL2, creates a 640x480 window, waits 3 seconds, and then cleans up."
+          },
+          {
+            "title": "Handling basic events",
+            "code": "SDL_Event e;\nint quit = 0;\nwhile (!quit) {\n    while (SDL_PollEvent(&e)) {\n        if (e.type == SDL_QUIT) {\n            quit = 1;\n        }\n    }\n}",
+            "explanation": "Processes SDL events in a loop and exits when the window close event is triggered."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Rendering with SDL2",
+            "code": "SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);\nSDL_SetRenderDrawColor(ren, 255, 0, 0, 255);\nSDL_RenderClear(ren);\nSDL_RenderPresent(ren);\nSDL_Delay(2000);\nSDL_DestroyRenderer(ren);",
+            "explanation": "Creates a renderer, clears the screen with red color, presents it, waits 2 seconds, and then cleans up."
+          },
+          {
+            "title": "Loading and displaying an image with SDL2_image",
+            "code": "#include <SDL2/SDL_image.h>\nSDL_Surface *img = IMG_Load(\"image.png\");\nSDL_Texture *tex = SDL_CreateTextureFromSurface(ren, img);\nSDL_FreeSurface(img);\nSDL_RenderCopy(ren, tex, NULL, NULL);\nSDL_RenderPresent(ren);",
+            "explanation": "Loads an image file into a texture and displays it in the SDL2 window."
+          },
+          {
+            "title": "Playing audio with SDL2_mixer",
+            "code": "#include <SDL2/SDL_mixer.h>\nMix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);\nMix_Music *music = Mix_LoadMUS(\"music.mp3\");\nMix_PlayMusic(music, -1);",
+            "explanation": "Initializes the audio subsystem, loads music, and plays it in a loop."
+          },
+          {
+            "title": "Using SDL2_ttf for text rendering",
+            "code": "#include <SDL2/SDL_ttf.h>\nTTF_Font *font = TTF_OpenFont(\"Arial.ttf\", 24);\nSDL_Color color = {255, 255, 255};\nSDL_Surface *text_surface = TTF_RenderText_Solid(font, \"Hello SDL2\", color);\nSDL_Texture *text_texture = SDL_CreateTextureFromSurface(ren, text_surface);\nSDL_FreeSurface(text_surface);\nSDL_RenderCopy(ren, text_texture, NULL, NULL);\nSDL_RenderPresent(ren);",
+            "explanation": "Renders text to a texture using TTF fonts and displays it in the window."
+          }
+        ],
+        "best_practices": [
+          "Always call SDL_Quit() before exiting to release resources.",
+          "Check return values for all SDL functions to handle initialization and runtime errors.",
+          "Use SDL_Renderer and textures for efficient 2D graphics rendering.",
+          "Poll events frequently to keep applications responsive.",
+          "Use SDL subsystems (SDL_image, SDL_mixer, SDL_ttf) for extended functionality."
+        ],
+        "error_handling": [
+          {
+            "error": "SDL_Init failed",
+            "solution": "Check that SDL2 is installed correctly and the development libraries are properly configured."
+          },
+          {
+            "error": "SDL_CreateWindow failed",
+            "solution": "Ensure the window dimensions are valid and the video subsystem is initialized."
+          },
+          {
+            "error": "IMG_Load failed",
+            "solution": "Verify the image file path and format; ensure SDL2_image is initialized."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://wiki.libsdl.org/",
+        "github": "https://github.com/libsdl-org/SDL"
+      }
+    },
+    {
+      "id": "gtk",
+      "name": "GTK",
+      "category": "GUI",
+      "description": "GTK (GIMP Toolkit) is a multi-platform toolkit for creating graphical user interfaces. In Python, GTK is accessible via the PyGObject library, allowing developers to build desktop applications with windows, dialogs, buttons, menus, and more.",
+      "story": "GTK was originally developed for the GIMP image editor and has evolved into a widely used toolkit for creating GUI applications on Linux, Windows, and macOS. PyGObject provides Python bindings for GTK 3 and GTK 4, enabling Python developers to create native-feeling desktop applications.",
+      "installation": {
+        "pip": "pip install PyGObject",
+        "conda": "conda install -c conda-forge pygobject"
+      },
+      "usage": {
+        "overview": "GTK allows developers to build windows, buttons, labels, text entries, and complex layouts. It supports signals for event handling, CSS-like styling, and integration with OpenGL or Cairo for custom drawing.",
+        "basic_examples": [
+          {
+            "title": "Simple GTK Window",
+            "code": "import gi\ngi.require_version('Gtk', '3.0')\nfrom gi.repository import Gtk\n\nclass MyWindow(Gtk.Window):\n    def __init__(self):\n        super().__init__(title='Hello GTK')\n        self.set_default_size(300, 200)\n        button = Gtk.Button(label='Click Me')\n        button.connect('clicked', self.on_button_clicked)\n        self.add(button)\n\n    def on_button_clicked(self, widget):\n        print('Button clicked!')\n\nwin = MyWindow()\nwin.connect('destroy', Gtk.main_quit)\nwin.show_all()\nGtk.main()",
+            "explanation": "Creates a basic GTK window with a button that prints a message when clicked."
+          },
+          {
+            "title": "Adding multiple widgets",
+            "code": "box = Gtk.Box(spacing=6)\nwin.add(box)\nlabel = Gtk.Label(label='Hello')\nentry = Gtk.Entry()\nbox.pack_start(label, True, True, 0)\nbox.pack_start(entry, True, True, 0)",
+            "explanation": "Demonstrates adding multiple widgets (label and entry) to a GTK box layout."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using TreeView to display data",
+            "code": "store = Gtk.ListStore(str, int)\nstore.append(['Alice', 25])\nstore.append(['Bob', 30])\ntreeview = Gtk.TreeView(model=store)\nrenderer = Gtk.CellRendererText()\ncolumn = Gtk.TreeViewColumn('Name', renderer, text=0)\ntreeview.append_column(column)\ncolumn2 = Gtk.TreeViewColumn('Age', renderer, text=1)\ntreeview.append_column(column2)\nwin.add(treeview)",
+            "explanation": "Displays tabular data in a GTK TreeView widget."
+          },
+          {
+            "title": "Using Dialogs",
+            "code": "dialog = Gtk.MessageDialog(parent=win, flags=0, message_type=Gtk.MessageType.INFO, buttons=Gtk.ButtonsType.OK, text='Hello Dialog')\ndialog.run()\ndialog.destroy()",
+            "explanation": "Creates and shows a simple information dialog."
+          },
+          {
+            "title": "Styling widgets with CSS",
+            "code": "css_provider = Gtk.CssProvider()\ncss_provider.load_from_data(b'button { background-color: #3498db; color: white; }')\nGtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)",
+            "explanation": "Applies CSS styling to GTK widgets."
+          },
+          {
+            "title": "Handling events and signals",
+            "code": "button.connect('clicked', on_button_clicked)\nwindow.connect('destroy', Gtk.main_quit)",
+            "explanation": "Connects GTK signals to callback functions to handle events like clicks and window closing."
+          }
+        ],
+        "best_practices": [
+          "Use Gtk.Builder and .ui files for complex layouts to separate UI from code.",
+          "Always call `show_all()` on windows to display all widgets.",
+          "Connect signals carefully to avoid memory leaks.",
+          "Use containers like Box, Grid, or Paned for flexible layouts.",
+          "Follow GTK CSS conventions to style applications consistently."
+        ],
+        "error_handling": [
+          {
+            "error": "Gtk.main_quit not called",
+            "solution": "Ensure you connect the destroy signal to Gtk.main_quit to properly exit the application."
+          },
+          {
+            "error": "Widget not showing",
+            "solution": "Call `show()` or `show_all()` on the widget or parent container."
+          },
+          {
+            "error": "TypeError: cannot register type",
+            "solution": "Check PyGObject version compatibility with GTK version."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.gtk.org/docs/",
+        "github": "https://gitlab.gnome.org/GNOME/pygobject"
+      }
+    },
+    {
+      "id": "libuv",
+      "name": "libuv",
+      "category": "Networking / Async",
+      "description": "libuv is a multi-platform C library that provides asynchronous I/O, event loops, timers, and cross-platform abstractions for networking, filesystems, and concurrency. It is designed to support high-performance, scalable applications.",
+      "story": "libuv was originally developed as part of Node.js to provide a consistent, event-driven, asynchronous I/O layer across different platforms. It is now used in many other projects that require efficient non-blocking I/O, including networking applications, servers, and frameworks.",
+      "installation": {
+        "linux": "sudo apt install libuv1-dev",
+        "mac": "brew install libuv",
+        "windows": "Download precompiled binaries from https://libuv.org/ or build from source"
+      },
+      "usage": {
+        "overview": "libuv allows developers to handle TCP/UDP sockets, files, and timers asynchronously using an event loop. It supports callbacks, handles, streams, and integrates well with C/C++ applications requiring high concurrency.",
+        "basic_examples": [
+          {
+            "title": "Initializing the event loop",
+            "code": "#include <uv.h>\n#include <stdio.h>\n\nint main() {\n    uv_loop_t *loop = uv_default_loop();\n    printf(\"Loop started\\n\");\n    uv_run(loop, UV_RUN_DEFAULT);\n    uv_loop_close(loop);\n    return 0;\n}",
+            "explanation": "Initializes the default libuv event loop, runs it (though no events are scheduled), and closes it."
+          },
+          {
+            "title": "Using a timer",
+            "code": "#include <uv.h>\n#include <stdio.h>\n\nvoid timer_cb(uv_timer_t* handle) {\n    printf(\"Timer fired!\\n\");\n}\n\nint main() {\n    uv_loop_t *loop = uv_default_loop();\n    uv_timer_t timer_req;\n    uv_timer_init(loop, &timer_req);\n    uv_timer_start(&timer_req, timer_cb, 1000, 0); // Fire once after 1000ms\n    uv_run(loop, UV_RUN_DEFAULT);\n    uv_loop_close(loop);\n    return 0;\n}",
+            "explanation": "Sets up a one-time timer that calls a callback after 1 second."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "TCP server",
+            "code": "#include <uv.h>\n#include <stdio.h>\n\nvoid on_new_connection(uv_stream_t *server, int status) {\n    if (status < 0) {\n        fprintf(stderr, \"New connection error: %s\\n\", uv_strerror(status));\n        return;\n    }\n    printf(\"New client connected\\n\");\n}\n\nint main() {\n    uv_loop_t *loop = uv_default_loop();\n    uv_tcp_t server;\n    uv_tcp_init(loop, &server);\n    struct sockaddr_in addr;\n    uv_ip4_addr(\"0.0.0.0\", 7000, &addr);\n    uv_tcp_bind(&server, (const struct sockaddr*)&addr, 0);\n    int r = uv_listen((uv_stream_t*)&server, 128, on_new_connection);\n    if (r) {\n        fprintf(stderr, \"Listen error: %s\\n\", uv_strerror(r));\n        return 1;\n    }\n    uv_run(loop, UV_RUN_DEFAULT);\n    uv_loop_close(loop);\n    return 0;\n}",
+            "explanation": "Creates a basic TCP server that listens on port 7000 and prints a message when a client connects."
+          },
+          {
+            "title": "Asynchronous file read",
+            "code": "#include <uv.h>\n#include <stdio.h>\n#include <stdlib.h>\n\nvoid read_cb(uv_fs_t* req) {\n    printf(\"File content: %s\\n\", (char*)req->bufs->base);\n    uv_fs_req_cleanup(req);\n}\n\nint main() {\n    uv_loop_t *loop = uv_default_loop();\n    uv_fs_t open_req;\n    uv_fs_open(loop, &open_req, \"test.txt\", O_RDONLY, 0, NULL);\n    uv_fs_t read_req;\n    char *buffer = malloc(1024);\n    uv_buf_t iov = uv_buf_init(buffer, 1024);\n    uv_fs_read(loop, &read_req, open_req.result, &iov, 1, 0, read_cb);\n    uv_run(loop, UV_RUN_DEFAULT);\n    uv_loop_close(loop);\n    free(buffer);\n    return 0;\n}",
+            "explanation": "Demonstrates asynchronous file reading using libuv."
+          },
+          {
+            "title": "UDP server",
+            "code": "#include <uv.h>\n#include <stdio.h>\n\nvoid alloc_buffer(uv_handle_t *handle, size_t suggested_size, uv_buf_t *buf) {\n    buf->base = malloc(suggested_size);\n    buf->len = suggested_size;\n}\n\nvoid on_read(uv_udp_t *req, ssize_t nread, const uv_buf_t *buf, const struct sockaddr *addr, unsigned flags) {\n    if (nread > 0) printf(\"Received: %s\\n\", buf->base);\n    free(buf->base);\n}\n\nint main() {\n    uv_loop_t *loop = uv_default_loop();\n    uv_udp_t recv_socket;\n    uv_udp_init(loop, &recv_socket);\n    struct sockaddr_in addr;\n    uv_ip4_addr(\"0.0.0.0\", 7000, &addr);\n    uv_udp_bind(&recv_socket, (const struct sockaddr*)&addr, 0);\n    uv_udp_recv_start(&recv_socket, alloc_buffer, on_read);\n    uv_run(loop, UV_RUN_DEFAULT);\n    uv_loop_close(loop);\n    return 0;\n}",
+            "explanation": "Sets up a UDP server that asynchronously receives messages."
+          }
+        ],
+        "best_practices": [
+          "Always initialize and close the event loop properly.",
+          "Free memory for buffers and handles to avoid leaks.",
+          "Use callbacks to handle events asynchronously.",
+          "Leverage libuv timers and async handles for concurrency instead of threads.",
+          "Handle errors in callbacks to prevent crashing the loop."
+        ],
+        "error_handling": [
+          {
+            "error": "UV_EADDRINUSE",
+            "solution": "Occurs when trying to bind to an address/port already in use. Choose a free port or close conflicting applications."
+          },
+          {
+            "error": "UV_ENOENT",
+            "solution": "File or directory not found. Verify paths for filesystem operations."
+          },
+          {
+            "error": "UV_ECONNREFUSED",
+            "solution": "Connection refused on TCP/UDP. Check that the server is running and reachable."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://libuv.org/",
+        "github": "https://github.com/libuv/libuv"
+      }
+    },
+    {
+      "id": "libpng",
+      "name": "libpng",
+      "category": "Graphics / Image Processing",
+      "description": "libpng is the official PNG reference library for C. It provides functions to read, write, and manipulate PNG (Portable Network Graphics) images, supporting compression, filtering, and color types.",
+      "story": "libpng was originally developed in 1996 as an open-source reference implementation for the PNG image format. It is widely used in graphics applications, game engines, and software that require handling of PNG images. The library focuses on speed, portability, and compliance with the PNG standard.",
+      "installation": {
+        "linux": "sudo apt install libpng-dev",
+        "mac": "brew install libpng",
+        "windows": "Download precompiled binaries from http://www.libpng.org/pub/png/libpng.html or build from source"
+      },
+      "usage": {
+        "overview": "libpng allows reading and writing PNG images, handling different color types (grayscale, RGB, RGBA), interlacing, and applying compression. It integrates with other image processing libraries for more advanced workflows.",
+        "basic_examples": [
+          {
+            "title": "Reading a PNG image",
+            "code": "#include <png.h>\n#include <stdio.h>\n\nint main() {\n    FILE *fp = fopen(\"image.png\", \"rb\");\n    if(!fp) return 1;\n\n    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);\n    png_infop info = png_create_info_struct(png);\n    png_init_io(png, fp);\n    png_read_info(png, info);\n\n    int width = png_get_image_width(png, info);\n    int height = png_get_image_height(png, info);\n    printf(\"Width: %d, Height: %d\\n\", width, height);\n\n    png_destroy_read_struct(&png, &info, NULL);\n    fclose(fp);\n    return 0;\n}",
+            "explanation": "Opens a PNG file, reads its header information, and prints the width and height."
+          },
+          {
+            "title": "Writing a PNG image",
+            "code": "#include <png.h>\n#include <stdio.h>\n\nint main() {\n    FILE *fp = fopen(\"output.png\", \"wb\");\n    if(!fp) return 1;\n\n    png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);\n    png_infop info = png_create_info_struct(png);\n    png_init_io(png, fp);\n\n    int width = 100, height = 100;\n    png_set_IHDR(png, info, width, height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,\n                 PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);\n    png_write_info(png, info);\n\n    // Writing image data would go here (omitted for brevity)\n\n    png_write_end(png, info);\n    png_destroy_write_struct(&png, &info);\n    fclose(fp);\n    return 0;\n}",
+            "explanation": "Sets up libpng structures and writes PNG header information. Image data writing requires row buffers."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Handling RGBA pixels",
+            "code": "// Read image and access pixel data using png_bytep rows[] and loop through width and height",
+            "explanation": "Demonstrates how to manipulate individual RGBA pixels after reading the PNG image."
+          },
+          {
+            "title": "Applying compression level",
+            "code": "png_set_compression_level(png, Z_BEST_COMPRESSION);",
+            "explanation": "Sets the PNG compression level for writing, improving file size at the cost of CPU usage."
+          },
+          {
+            "title": "Interlacing support",
+            "code": "png_set_interlace_handling(png);",
+            "explanation": "Handles interlaced PNGs correctly when reading or writing images."
+          }
+        ],
+        "best_practices": [
+          "Always check return values for file operations and libpng functions.",
+          "Free libpng structures with png_destroy_read_struct or png_destroy_write_struct to avoid memory leaks.",
+          "Handle different color types correctly (grayscale, RGB, RGBA).",
+          "Use appropriate compression levels depending on performance vs file size trade-offs.",
+          "Consult PNG specifications for proper handling of filters and interlacing."
+        ],
+        "error_handling": [
+          {
+            "error": "NULL pointer returned by png_create_read_struct",
+            "solution": "Ensure sufficient memory is available and libpng is initialized correctly."
+          },
+          {
+            "error": "libpng read error",
+            "solution": "Check file integrity and ensure it is a valid PNG file."
+          },
+          {
+            "error": "libpng write error",
+            "solution": "Ensure the file is writable and the PNG structures are properly initialized."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "http://www.libpng.org/pub/png/libpng.html",
+        "github": "https://github.com/glennrp/libpng"
+      }
+    },
+    {
+      "id": "libjpeg-turbo",
+      "name": "libjpeg-turbo",
+      "category": "Graphics / Image Processing",
+      "description": "libjpeg-turbo is a high-speed version of the standard JPEG image codec library, using SIMD instructions (MMX, SSE2, NEON, AltiVec) to accelerate JPEG compression and decompression.",
+      "story": "libjpeg-turbo was created to provide faster JPEG encoding and decoding than the standard libjpeg library. It maintains full ABI and API compatibility with libjpeg, making it easy to replace in existing projects while gaining significant performance improvements.",
+      "installation": {
+        "linux": "sudo apt install libjpeg-turbo8-dev",
+        "mac": "brew install libjpeg-turbo",
+        "windows": "Download prebuilt binaries from https://libjpeg-turbo.org/ or build from source"
+      },
+      "usage": {
+        "overview": "libjpeg-turbo provides functions to read, write, and manipulate JPEG images efficiently. It supports standard JPEG features, including color spaces, sampling factors, and progressive JPEGs. Applications often use it for image viewers, editors, and servers requiring fast JPEG processing.",
+        "basic_examples": [
+          {
+            "title": "Reading a JPEG image",
+            "code": "#include <stdio.h>\n#include <jpeglib.h>\nint main() {\n    FILE *infile = fopen(\"image.jpg\", \"rb\");\n    struct jpeg_decompress_struct cinfo;\n    struct jpeg_error_mgr jerr;\n\n    cinfo.err = jpeg_std_error(&jerr);\n    jpeg_create_decompress(&cinfo);\n    jpeg_stdio_src(&cinfo, infile);\n    jpeg_read_header(&cinfo, TRUE);\n    jpeg_start_decompress(&cinfo);\n\n    int row_stride = cinfo.output_width * cinfo.output_components;\n    JSAMPARRAY buffer = (*cinfo.mem->alloc_sarray)((j_common_ptr)&cinfo, JPOOL_IMAGE, row_stride, 1);\n\n    while (cinfo.output_scanline < cinfo.output_height) {\n        jpeg_read_scanlines(&cinfo, buffer, 1);\n        // Process buffer[0] here\n    }\n\n    jpeg_finish_decompress(&cinfo);\n    jpeg_destroy_decompress(&cinfo);\n    fclose(infile);\n    return 0;\n}",
+            "explanation": "Reads a JPEG image from file using libjpeg-turbo and iterates over scanlines for processing."
+          },
+          {
+            "title": "Writing a JPEG image",
+            "code": "#include <stdio.h>\n#include <jpeglib.h>\nint main() {\n    FILE *outfile = fopen(\"output.jpg\", \"wb\");\n    struct jpeg_compress_struct cinfo;\n    struct jpeg_error_mgr jerr;\n\n    cinfo.err = jpeg_std_error(&jerr);\n    jpeg_create_compress(&cinfo);\n    jpeg_stdio_dest(&cinfo, outfile);\n\n    cinfo.image_width = 100;\n    cinfo.image_height = 100;\n    cinfo.input_components = 3;\n    cinfo.in_color_space = JCS_RGB;\n\n    jpeg_set_defaults(&cinfo);\n    jpeg_start_compress(&cinfo, TRUE);\n\n    JSAMPROW row_pointer[1];\n    unsigned char row[100*3]; // Fill row with pixel data\n    while(cinfo.next_scanline < cinfo.image_height) {\n        row_pointer[0] = row;\n        jpeg_write_scanlines(&cinfo, row_pointer, 1);\n    }\n\n    jpeg_finish_compress(&cinfo);\n    jpeg_destroy_compress(&cinfo);\n    fclose(outfile);\n    return 0;\n}",
+            "explanation": "Writes a simple 100x100 RGB JPEG image to disk using libjpeg-turbo."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using TurboJPEG API for faster processing",
+            "code": "#include <turbojpeg.h>\ntjhandle handle = tjInitDecompress();\nint width, height, jpegSubsamp;\nunsigned char *jpegBuf;\ntjDecompressHeader3(handle, jpegBuf, jpegSize, &width, &height, &jpegSubsamp);\nunsigned char *dstBuf = malloc(width*height*3);\ntjDecompress2(handle, jpegBuf, jpegSize, dstBuf, width, 0, height, TJPF_RGB, TJFLAG_FASTDCT);\ntjDestroy(handle);",
+            "explanation": "Demonstrates using the TurboJPEG API for extremely fast JPEG decompression with SIMD acceleration."
+          },
+          {
+            "title": "Compressing image with TurboJPEG",
+            "code": "tjhandle handle = tjInitCompress();\ntjCompress2(handle, srcBuf, width, 0, height, TJPF_RGB, &jpegBuf, &jpegSize, TJSAMP_420, 90, TJFLAG_FASTDCT);\ntjDestroy(handle);",
+            "explanation": "Compresses an RGB image buffer into JPEG format efficiently using TurboJPEG."
+          }
+        ],
+        "best_practices": [
+          "Use the TurboJPEG API for performance-critical JPEG encoding/decoding.",
+          "Always free buffers and destroy handles to prevent memory leaks.",
+          "Leverage SIMD-optimized flags for faster computation.",
+          "Validate image dimensions and color formats before processing.",
+          "Use libjpeg-turbo in place of libjpeg where speed is essential."
+        ],
+        "error_handling": [
+          {
+            "error": "JPEG error during decompression",
+            "solution": "Ensure input JPEG data is valid and `jpeg_std_error` is set for proper error handling."
+          },
+          {
+            "error": "Memory allocation failure",
+            "solution": "Check available memory and properly free buffers after use."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://libjpeg-turbo.org/",
+        "github": "https://github.com/libjpeg-turbo/libjpeg-turbo"
+      }
+    },
+    {
+      "id": "openal",
+      "name": "OpenAL",
+      "category": "Audio / Multimedia",
+      "description": "OpenAL (Open Audio Library) is a cross-platform 3D audio API designed for efficient rendering of multichannel spatialized audio. It is used in games, simulations, and multimedia applications to provide immersive sound experiences.",
+      "story": "OpenAL was created to provide a high-level API for 3D audio similar to OpenGL for graphics. It allows developers to place audio sources in 3D space, apply effects like Doppler shift, and control listener orientation and distance. OpenAL is widely used in gaming engines, VR applications, and interactive audio software.",
+      "installation": {
+        "linux": "sudo apt install libopenal-dev",
+        "mac": "brew install openal-soft",
+        "windows": "Download and install from https://openal.org/downloads/"
+      },
+      "usage": {
+        "overview": "OpenAL allows developers to create audio buffers, define sources, and control playback in 3D space. It supports positional audio, distance attenuation, looping, streaming, and effects. The API integrates with low-level audio backends across platforms for consistent audio behavior.",
+        "basic_examples": [
+          {
+            "title": "Initializing OpenAL",
+            "code": "#include <AL/al.h>\n#include <AL/alc.h>\n\nALCdevice *device = alcOpenDevice(NULL);\nALCcontext *context = alcCreateContext(device, NULL);\nalcMakeContextCurrent(context);\n// Do audio work here\nalcMakeContextCurrent(NULL);\nalcDestroyContext(context);\nalcCloseDevice(device);",
+            "explanation": "Initializes OpenAL by opening a device, creating a context, and making it current. Cleans up resources afterward."
+          },
+          {
+            "title": "Creating a buffer and source",
+            "code": "ALuint buffer;\nalGenBuffers(1, &buffer);\n// Load audio data into buffer\n\nALuint source;\nalGenSources(1, &source);\nalSourcei(source, AL_BUFFER, buffer);\nalSourcePlay(source);",
+            "explanation": "Generates an audio buffer, loads data, attaches it to a source, and plays the sound."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Positional audio",
+            "code": "ALfloat listenerPos[] = {0.0, 0.0, 0.0};\nALfloat listenerVel[] = {0.0, 0.0, 0.0};\nalListenerfv(AL_POSITION, listenerPos);\nalListenerfv(AL_VELOCITY, listenerVel);\nALfloat sourcePos[] = {5.0, 0.0, 0.0};\nalSourcefv(source, AL_POSITION, sourcePos);",
+            "explanation": "Positions the listener and source in 3D space to achieve spatialized sound effects."
+          },
+          {
+            "title": "Looping and distance attenuation",
+            "code": "alSourcei(source, AL_LOOPING, AL_TRUE);\nalSourcef(source, AL_REFERENCE_DISTANCE, 1.0f);\nalSourcef(source, AL_MAX_DISTANCE, 20.0f);",
+            "explanation": "Sets the source to loop and applies distance-based attenuation for realistic 3D audio."
+          },
+          {
+            "title": "Streaming audio",
+            "code": "// Use multiple buffers and queue them to a source for continuous playback (requires updating buffers in a loop).",
+            "explanation": "Demonstrates streaming large audio files by continuously updating queued buffers."
+          },
+          {
+            "title": "Applying effects (EAX / Reverb)",
+            "code": "// Use OpenAL Effects Extension (ALC_EXT_EFX) to apply effects like reverb, echo, or filters to sources.",
+            "explanation": "Enhances audio realism by applying environmental audio effects to sources."
+          }
+        ],
+        "best_practices": [
+          "Always check for OpenAL errors using alGetError() after calls.",
+          "Use positional audio to enhance immersion in games and simulations.",
+          "Release buffers and sources after use to prevent memory leaks.",
+          "Use the effects extension for richer audio environments when available.",
+          "Stream large audio files instead of loading entirely into memory."
+        ],
+        "error_handling": [
+          {
+            "error": "AL_INVALID_NAME",
+            "solution": "Occurs when referencing a non-existent buffer or source. Ensure buffers and sources are properly generated."
+          },
+          {
+            "error": "AL_INVALID_ENUM",
+            "solution": "Occurs when passing an invalid enum value to an OpenAL function. Check function parameters."
+          },
+          {
+            "error": "AL_INVALID_VALUE",
+            "solution": "Occurs when passing an invalid numeric value (e.g., negative gain or frequency)."
+          },
+          {
+            "error": "AL_OUT_OF_MEMORY",
+            "solution": "Insufficient memory to allocate buffers or sources. Free unused resources or reduce allocations."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.openal.org/documentation/",
+        "github": "https://github.com/kcat/openal-soft"
+      }
+    },
+    {
+      "id": "ncurses",
+      "name": "ncurses",
+      "category": "CLI/Utils",
+      "description": "ncurses is a programming library that provides an API for creating text-based user interfaces in a terminal-independent manner. It supports windows, colors, keyboard input, and mouse events in terminal applications.",
+      "story": "ncurses was developed as a free-software emulation of the proprietary curses library, originally created for BSD Unix systems. It enables developers to build interactive command-line applications with advanced text-based UIs, such as menus, forms, and dashboards.",
+      "installation": {
+        "linux": "sudo apt install libncurses5-dev libncursesw5-dev",
+        "mac": "brew install ncurses",
+        "windows": "Use Cygwin or MSYS2 to install ncurses for Windows development"
+      },
+      "usage": {
+        "overview": "ncurses allows developers to control cursor movement, handle keyboard input, display colored text, create multiple windows, and manage terminal screens efficiently. It is widely used for CLI-based applications, system monitors, text editors, and terminal games.",
+        "basic_examples": [
+          {
+            "title": "Initializing and ending ncurses",
+            "code": "#include <ncurses.h>\n\nint main() {\n    initscr(); // Start ncurses mode\n    printw(\"Hello, ncurses!\");\n    refresh(); // Print on screen\n    getch();   // Wait for user input\n    endwin();  // End ncurses mode\n    return 0;\n}",
+            "explanation": "Initializes the ncurses environment, prints text to the screen, waits for a key press, and then exits cleanly."
+          },
+          {
+            "title": "Using colors",
+            "code": "#include <ncurses.h>\n\nint main() {\n    initscr();\n    start_color();\n    init_pair(1, COLOR_RED, COLOR_BLACK);\n    attron(COLOR_PAIR(1));\n    printw(\"Red Text\");\n    attroff(COLOR_PAIR(1));\n    refresh();\n    getch();\n    endwin();\n    return 0;\n}",
+            "explanation": "Demonstrates creating a color pair and using it to display colored text in the terminal."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Creating multiple windows",
+            "code": "#include <ncurses.h>\n\nint main() {\n    initscr();\n    WINDOW *win1 = newwin(10, 20, 0, 0);\n    WINDOW *win2 = newwin(10, 20, 5, 25);\n    box(win1, 0, 0);\n    box(win2, 0, 0);\n    wrefresh(win1);\n    wrefresh(win2);\n    getch();\n    delwin(win1);\n    delwin(win2);\n    endwin();\n    return 0;\n}",
+            "explanation": "Shows how to create two separate windows, draw boxes around them, and refresh each individually."
+          },
+          {
+            "title": "Handling keyboard input",
+            "code": "#include <ncurses.h>\n\nint main() {\n    initscr();\n    keypad(stdscr, TRUE);\n    printw(\"Press arrow keys (ESC to exit)\\n\");\n    int ch;\n    while((ch = getch()) != 27) {\n        switch(ch) {\n            case KEY_UP: printw(\"Up\\n\"); break;\n            case KEY_DOWN: printw(\"Down\\n\"); break;\n            case KEY_LEFT: printw(\"Left\\n\"); break;\n            case KEY_RIGHT: printw(\"Right\\n\"); break;\n            default: printw(\"Key code: %d\\n\", ch);\n        }\n        refresh();\n    }\n    endwin();\n    return 0;\n}",
+            "explanation": "Enables arrow key input and responds to different keys in a loop until the ESC key is pressed."
+          },
+          {
+            "title": "Menus and forms",
+            "code": "// Use <menu.h> and <form.h> headers to create interactive menus and forms (requires linking with -lmenu -lform).",
+            "explanation": "Demonstrates how ncurses can be extended to create complex interactive text-based user interfaces."
+          }
+        ],
+        "best_practices": [
+          "Always call `initscr()` before using ncurses functions and `endwin()` before exiting.",
+          "Use `refresh()` and `wrefresh()` appropriately to update the screen or windows.",
+          "Enable keypad mode when handling special keys.",
+          "Use color pairs instead of direct color codes for portability.",
+          "Clean up all windows with `delwin()` to avoid memory leaks."
+        ],
+        "error_handling": [
+          {
+            "error": "Unable to initialize ncurses",
+            "solution": "Ensure terminal supports ncurses and that your program links against `-lncurses`."
+          },
+          {
+            "error": "KEY_* constants not recognized",
+            "solution": "Call `keypad(stdscr, TRUE)` or on the specific window to enable special key input."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://invisible-island.net/ncurses/man/ncurses.3x.html",
+        "github": "https://github.com/mirror/ncurses"
+      }
+    },
+    {
+      "id": "check",
+      "name": "Check",
+      "category": "Testing",
+      "description": "Check is a unit testing framework for C that allows developers to write test cases for their code in a simple and structured way. It provides assertions, test fixtures, and test suites to ensure code correctness.",
+      "story": "Check was created to provide an easy-to-use framework for C unit testing, similar to frameworks available in other languages like JUnit for Java. It supports test cases, setup/teardown functions, and reporting, helping C developers maintain robust and reliable code.",
+      "installation": {
+        "linux": "sudo apt install check",
+        "mac": "brew install check",
+        "windows": "Use MSYS2 or build from source via https://libcheck.github.io/check/"
+      },
+      "usage": {
+        "overview": "Check allows you to define test cases with `START_TEST` and `END_TEST` macros, group them into test suites, and run them with the `SRunner`. It supports setup/teardown functions for initializing and cleaning resources before and after tests.",
+        "basic_examples": [
+          {
+            "title": "Simple test case",
+            "code": "#include <check.h>\n#include <stdlib.h>\n\nint add(int a, int b) { return a + b; }\n\nSTART_TEST(test_add) {\n    ck_assert_int_eq(add(2, 3), 5);\n}\nEND_TEST\n\nint main(void) {\n    Suite *s = suite_create(\"MySuite\");\n    TCase *tc = tcase_create(\"Core\");\n    tcase_add_test(tc, test_add);\n    suite_add_tcase(s, tc);\n\n    SRunner *sr = srunner_create(s);\n    srunner_run_all(sr, CK_NORMAL);\n    int number_failed = srunner_ntests_failed(sr);\n    srunner_free(sr);\n    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;\n}",
+            "explanation": "Defines a simple test for the `add` function using `ck_assert_int_eq` and runs it via a test suite and runner."
+          },
+          {
+            "title": "Using setup and teardown",
+            "code": "START_TEST(test_example) {\n    ck_assert_int_eq(42, *ptr);\n}\nEND_TEST\n\nvoid setup(void) { ptr = malloc(sizeof(int)); *ptr = 42; }\nvoid teardown(void) { free(ptr); }",
+            "explanation": "Demonstrates initializing resources before a test and cleaning them up afterward."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Multiple test cases in a suite",
+            "code": "START_TEST(test_add) { ck_assert_int_eq(add(2,3), 5); } END_TEST\nSTART_TEST(test_subtract) { ck_assert_int_eq(subtract(5,3), 2); } END_TEST\nTCase *tc = tcase_create(\"Math\");\ntcase_add_test(tc, test_add);\ntcase_add_test(tc, test_subtract);\nSuite *s = suite_create(\"MathSuite\");\nsuite_add_tcase(s, tc);",
+            "explanation": "Groups multiple test cases into a single test suite for organized execution."
+          },
+          {
+            "title": "Skipping tests",
+            "code": "START_TEST(test_skip) { ck_abort_msg(\"Skipping this test\"); } END_TEST",
+            "explanation": "Shows how to skip a test dynamically with a custom message."
+          },
+          {
+            "title": "Floating-point assertions",
+            "code": "START_TEST(test_float) { ck_assert_double_eq_tol(3.1415, pi, 0.0001); } END_TEST",
+            "explanation": "Demonstrates asserting approximate equality for floating-point values with a tolerance."
+          }
+        ],
+        "best_practices": [
+          "Group related test cases into suites for easier management.",
+          "Use setup/teardown functions to handle resource allocation and cleanup.",
+          "Keep tests independent to avoid side effects between tests.",
+          "Use meaningful assertion macros (`ck_assert`, `ck_assert_int_eq`, `ck_assert_double_eq_tol`, etc.) for clarity.",
+          "Run tests frequently during development to catch regressions early."
+        ],
+        "error_handling": [
+          {
+            "error": "Segmentation fault in a test",
+            "solution": "Check pointer usage and ensure proper memory allocation/deallocation in setup and test cases."
+          },
+          {
+            "error": "Assertion failures",
+            "solution": "Review the failed assertion message and debug the logic of the function under test."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://libcheck.github.io/check/",
+        "github": "https://github.com/libcheck/check"
+      }
+    },
+    {
+      "id": "unity-c",
+      "name": "Unity (C/C++ Scripting)",
+      "category": "Game Development",
+      "description": "Unity is a cross-platform game engine that allows developers to create 2D, 3D, VR, and AR games. While Unity primarily uses C#, low-level plugins and performance-critical components can be developed using C or C++ for integration via Unity's Native Plugin Interface.",
+      "story": "Unity was developed by Unity Technologies in 2005 to provide an accessible yet powerful game engine. For high-performance needs, developers use C/C++ plugins to interact with Unity, enabling optimized physics, graphics, AI, or platform-specific integrations.",
+      "installation": {
+        "unity": "Download and install Unity Hub from https://unity.com/",
+        "plugin_dev": "Install C/C++ development tools (Visual Studio, Xcode, or gcc/clang) for creating native plugins"
+      },
+      "usage": {
+        "overview": "Unity allows you to write C# scripts for game logic, while C/C++ can be used for native plugins that are called from Unity scripts. These plugins provide performance-critical functions, access to platform APIs, or custom rendering/physics systems.",
+        "basic_examples": [
+          {
+            "title": "Creating a simple C plugin",
+            "code": "// myplugin.c\n#include <stdio.h>\n\nextern \"C\" void HelloPlugin() {\n    printf(\"Hello from C plugin!\\n\");\n}",
+            "explanation": "Defines a simple C function that prints a message. The `extern \"C\"` is needed to avoid name mangling for C++ compilers."
+          },
+          {
+            "title": "Calling C plugin from Unity C#",
+            "code": "using System.Runtime.InteropServices;\nusing UnityEngine;\n\npublic class PluginTest : MonoBehaviour {\n    [DllImport(\"myplugin\")]\n    private static extern void HelloPlugin();\n\n    void Start() {\n        HelloPlugin();\n    }\n}",
+            "explanation": "Shows how to import and call a C function from Unity using DllImport in a C# script."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Passing data to C plugin",
+            "code": "// myplugin.c\nextern \"C\" void AddNumbers(int a, int b, int* result) {\n    *result = a + b;\n}",
+            "explanation": "Demonstrates passing values and pointers between Unity C# and a C plugin."
+          },
+          {
+            "title": "Using C++ for complex logic",
+            "code": "// myplugin.cpp\n#include <cmath>\nextern \"C\" float ComputeDistance(float x1, float y1, float x2, float y2) {\n    return sqrtf((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));\n}",
+            "explanation": "Shows a C++ plugin function performing calculations callable from Unity."
+          },
+          {
+            "title": "Integration with Unity physics",
+            "code": "// Native physics calculations in C/C++ can be exposed as plugin functions\n// Then invoked from Unity scripts for performance-critical tasks.",
+            "explanation": "Use C/C++ for heavy physics, AI, or rendering tasks that require native speed."
+          }
+        ],
+        "best_practices": [
+          "Use C/C++ plugins only for performance-critical code.",
+          "Keep plugin APIs simple and well-documented for Unity integration.",
+          "Manage memory carefully to prevent leaks or crashes.",
+          "Ensure platform-specific binaries are compiled for all target platforms (Windows, Mac, iOS, Android).",
+          "Use Unity Profiler to identify areas where native plugins provide real performance gains."
+        ],
+        "error_handling": [
+          {
+            "error": "DllNotFoundException",
+            "solution": "Ensure the plugin binary is in the correct folder (Assets/Plugins) and named correctly for the platform."
+          },
+          {
+            "error": "EntryPointNotFoundException",
+            "solution": "Check the function names in the C/C++ plugin and match them in DllImport attributes."
+          },
+          {
+            "error": "Segmentation fault / Access violation",
+            "solution": "Ensure proper memory management and pointer usage in C/C++ code. Avoid invalid dereferencing."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://docs.unity3d.com/Manual/NativePluginInterface.html",
+        "github": "https://github.com/Unity-Technologies"
+      }
+    },
+    {
+      "id": "poppler",
+      "name": "Poppler",
+      "category": "PDF / Document Processing",
+      "description": "Poppler is a PDF rendering library based on the xpdf-3.0 code base. It provides tools and APIs to extract text, render pages, and manipulate PDF files in C and C++ applications.",
+      "story": "Poppler was developed to provide a robust and efficient open-source PDF rendering solution. It is widely used in Linux desktop applications (like Evince, Okular) and command-line utilities for PDF manipulation, text extraction, and rendering.",
+      "installation": {
+        "linux": "sudo apt install libpoppler-dev poppler-utils",
+        "mac": "brew install poppler",
+        "windows": "Download binaries from http://blog.alivate.com.au/poppler-windows/"
+      },
+      "usage": {
+        "overview": "Poppler provides both command-line utilities (like `pdftotext`, `pdftoppm`) and library APIs for C/C++. You can render PDF pages to images, extract text, read metadata, and manipulate PDF content programmatically.",
+        "basic_examples": [
+          {
+            "title": "Extracting text from PDF using pdftotext",
+            "code": "# Terminal command\npdftotext input.pdf output.txt",
+            "explanation": "Converts the contents of a PDF file to a plain text file using the Poppler utility."
+          },
+          {
+            "title": "Rendering PDF page to image using pdftoppm",
+            "code": "# Terminal command\npdftoppm -png input.pdf output",
+            "explanation": "Renders PDF pages as PNG images; each page will produce a separate image file."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using Poppler C++ API to open a PDF document",
+            "code": "#include <poppler-document.h>\n#include <poppler-page.h>\n#include <iostream>\n\nint main() {\n    poppler::document* doc = poppler::document::load_from_file(\"input.pdf\");\n    if (!doc) { std::cerr << \"Failed to open PDF.\" << std::endl; return 1; }\n    std::cout << \"Number of pages: \" << doc->pages() << std::endl;\n    delete doc;\n    return 0;\n}",
+            "explanation": "Loads a PDF document using Poppler C++ API and prints the number of pages."
+          },
+          {
+            "title": "Extracting text from a page",
+            "code": "#include <poppler-document.h>\n#include <poppler-page.h>\n#include <iostream>\n\nint main() {\n    auto doc = poppler::document::load_from_file(\"input.pdf\");\n    if (!doc) return 1;\n    auto page = doc->create_page(0);\n    if (page) {\n        std::cout << page->text().to_latin1() << std::endl;\n        delete page;\n    }\n    delete doc;\n    return 0;\n}",
+            "explanation": "Extracts text from the first page of a PDF document using Poppler's C++ API."
+          },
+          {
+            "title": "Rendering a page to an image",
+            "code": "// Use poppler-page.h and poppler-image.h\n// Render page to an image buffer for GUI applications or saving as PNG",
+            "explanation": "Poppler allows rendering pages to images programmatically for display or saving."
+          }
+        ],
+        "best_practices": [
+          "Always check for null pointers when loading documents or pages.",
+          "Release memory for documents, pages, and images to prevent leaks.",
+          "Use the latest Poppler version for better PDF feature support and security fixes.",
+          "For large PDFs, process pages sequentially to avoid excessive memory usage.",
+          "Prefer Poppler's C++ API for fine-grained control in applications."
+        ],
+        "error_handling": [
+          {
+            "error": "Failed to load PDF",
+            "solution": "Check that the PDF path is correct and the file is not corrupted."
+          },
+          {
+            "error": "Null page object",
+            "solution": "Verify that the page index is within the range of available pages in the document."
+          },
+          {
+            "error": "Text extraction empty",
+            "solution": "Some PDFs may use non-standard encoding; try using alternative extraction methods or OCR if necessary."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://poppler.freedesktop.org/",
+        "github": "https://gitlab.freedesktop.org/poppler/poppler"
+      }
+    },
+    {
+      "id": "mupdf",
+      "name": "MuPDF",
+      "category": "PDF / Document Processing",
+      "description": "MuPDF is a lightweight, high-performance PDF, XPS, and EPUB rendering library written in C. It allows text extraction, page rendering, and manipulation of PDF documents with minimal memory usage.",
+      "story": "MuPDF was developed by Artifex Software to provide a fast and compact alternative to larger PDF libraries. It is commonly used in mobile applications, desktop software, and embedded systems where performance and low resource usage are critical.",
+      "installation": {
+        "linux": "sudo apt install mupdf mupdf-tools libmupdf-dev",
+        "mac": "brew install mupdf",
+        "windows": "Download precompiled binaries from https://mupdf.com/downloads/"
+      },
+      "usage": {
+        "overview": "MuPDF provides APIs to render PDF pages to bitmaps, extract text, access metadata, and annotate documents. It supports interactive viewing, searching, and converting pages to images or other formats.",
+        "basic_examples": [
+          {
+            "title": "Rendering a PDF page to PNG",
+            "code": "# Command-line example\nmutool draw -o output.png input.pdf 1",
+            "explanation": "Uses the `mutool` command-line utility to render the first page of a PDF to a PNG image."
+          },
+          {
+            "title": "Extracting text from a PDF page",
+            "code": "# Command-line example\nmutool extract input.pdf",
+            "explanation": "Extracts embedded text and images from a PDF document using MuPDF utilities."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using the C API to open a PDF document",
+            "code": "#include \"mupdf/fitz.h\"\nint main() {\n    fz_context *ctx = fz_new_context(NULL, NULL, FZ_STORE_DEFAULT);\n    fz_document *doc = fz_open_document(ctx, \"input.pdf\");\n    int page_count = fz_count_pages(ctx, doc);\n    printf(\"Number of pages: %d\\n\", page_count);\n    fz_drop_document(ctx, doc);\n    fz_drop_context(ctx);\n    return 0;\n}",
+            "explanation": "Opens a PDF document using the MuPDF C API and prints the number of pages."
+          },
+          {
+            "title": "Rendering a page to an image buffer",
+            "code": "// Use fz_new_pixmap_from_page to render pages and save as PNG or display in GUI applications.",
+            "explanation": "Demonstrates rendering PDF pages programmatically for GUI display or image export."
+          },
+          {
+            "title": "Text extraction using C API",
+            "code": "// Use fz_new_text_page and fz_text_page_from_page to extract structured text from a PDF page.",
+            "explanation": "Enables text extraction programmatically, suitable for search or text analysis applications."
+          }
+        ],
+        "best_practices": [
+          "Always create and drop `fz_context` to manage memory safely.",
+          "Check return values for all MuPDF API calls to handle errors gracefully.",
+          "Use MuPDF for lightweight PDF rendering where memory efficiency is important.",
+          "Release resources such as documents and pixmaps after use.",
+          "Combine MuPDF with GUI libraries for building custom PDF viewers."
+        ],
+        "error_handling": [
+          {
+            "error": "Failed to open document",
+            "solution": "Ensure the file path is correct and the PDF is not corrupted."
+          },
+          {
+            "error": "Memory allocation errors",
+            "solution": "Manage contexts, documents, and pixmaps carefully to avoid leaks."
+          },
+          {
+            "error": "Text extraction returns empty",
+            "solution": "Some PDFs may store text as images; OCR may be required."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://mupdf.com/docs/",
+        "github": "https://github.com/ArtifexSoftware/mupdf"
+      }
+    },
+    {
+      "id": "cmocka",
+      "name": "CMocka",
+      "category": "Testing",
+      "description": "CMocka is a lightweight, modern unit testing framework for C. It provides a simple API for writing unit tests, mocking functions, and verifying behavior in C programs.",
+      "story": "CMocka was developed as a modern alternative to other C unit testing frameworks. It emphasizes simplicity, minimal dependencies, and provides support for mock objects, test fixtures, and assertions to ensure reliable C code testing.",
+      "installation": {
+        "linux": "sudo apt install cmocka cmocka-doc",
+        "mac": "brew install cmocka",
+        "windows": "Build from source using CMake or use vcpkg: `vcpkg install cmocka`"
+      },
+      "usage": {
+        "overview": "CMocka allows you to define test functions, use setup and teardown functions for test fixtures, perform assertions, and run tests via a test runner. It supports mocking to replace functions and verify interactions.",
+        "basic_examples": [
+          {
+            "title": "Simple test case",
+            "code": "#include <stdarg.h>\n#include <stddef.h>\n#include <setjmp.h>\n#include <cmocka.h>\n\nint add(int a, int b) { return a + b; }\n\nstatic void test_add(void **state) {\n    assert_int_equal(add(2, 3), 5);\n}\n\nint main(void) {\n    const struct CMUnitTest tests[] = { cmocka_unit_test(test_add) };\n    return cmocka_run_group_tests(tests, NULL, NULL);\n}",
+            "explanation": "Defines a simple test for an `add` function and runs it using CMocka's test runner."
+          },
+          {
+            "title": "Using setup and teardown",
+            "code": "static int *ptr;\n\nstatic int setup(void **state) { ptr = malloc(sizeof(int)); *ptr = 42; return 0; }\nstatic int teardown(void **state) { free(ptr); return 0; }\n\nstatic void test_example(void **state) { assert_int_equal(*ptr, 42); }",
+            "explanation": "Demonstrates initializing and cleaning resources before and after a test using setup and teardown functions."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Mocking functions",
+            "code": "// Use cmocka's mock() and expect_value() functions to replace and verify calls to other functions in the tested code.",
+            "explanation": "Enables unit testing of components that depend on external functions by mocking them."
+          },
+          {
+            "title": "Grouping multiple test cases",
+            "code": "static void test_subtract(void **state) { assert_int_equal(5 - 3, 2); }\nconst struct CMUnitTest tests[] = {\n    cmocka_unit_test(test_add),\n    cmocka_unit_test(test_subtract)\n};",
+            "explanation": "Groups multiple tests into a single test suite for organized execution."
+          }
+        ],
+        "best_practices": [
+          "Use setup and teardown functions to handle resource allocation and cleanup.",
+          "Keep tests independent to avoid side effects.",
+          "Use meaningful assertions for clarity.",
+          "Leverage mocks for testing functions with external dependencies.",
+          "Run tests frequently to catch regressions early."
+        ],
+        "error_handling": [
+          {
+            "error": "Assertion failure",
+            "solution": "Check the assertion message to identify why the test failed and debug the function accordingly."
+          },
+          {
+            "error": "Segmentation fault",
+            "solution": "Ensure proper memory allocation and pointer usage in tests and tested functions."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://cmocka.org/",
+        "github": "https://github.com/cmocka/cmocka"
+      }
+    },
+    {
+      "id": "pthread",
+      "name": "pthread",
+      "category": "Concurrency / Multithreading",
+      "description": "pthread (POSIX Threads) is a standard C library for creating and managing threads. It provides APIs for multithreading, synchronization, and concurrency control in C programs on POSIX-compliant systems.",
+      "story": "pthread was developed as part of the POSIX standard to allow portable multithreaded programming in C. It provides primitives for thread creation, joining, mutexes, condition variables, and thread-local storage, enabling developers to write efficient concurrent programs.",
+      "installation": {
+        "linux": "Usually included in glibc; link with -pthread during compilation",
+        "mac": "Included by default; link with -pthread",
+        "windows": "Use pthreads-w32 library: http://sourceware.org/pthreads-win32/"
+      },
+      "usage": {
+        "overview": "pthread allows creating multiple threads, synchronizing access to shared resources with mutexes and condition variables, and coordinating execution using thread joins or detachment.",
+        "basic_examples": [
+          {
+            "title": "Creating and joining a thread",
+            "code": "#include <pthread.h>\n#include <stdio.h>\n\nvoid* print_message(void* arg) {\n    printf(\"Hello from thread!\\n\");\n    return NULL;\n}\n\nint main() {\n    pthread_t thread;\n    pthread_create(&thread, NULL, print_message, NULL);\n    pthread_join(thread, NULL);\n    return 0;\n}",
+            "explanation": "Creates a thread that prints a message and waits for it to finish using `pthread_join`."
+          },
+          {
+            "title": "Using a mutex",
+            "code": "#include <pthread.h>\n#include <stdio.h>\n\nint counter = 0;\npthread_mutex_t lock;\n\nvoid* increment(void* arg) {\n    pthread_mutex_lock(&lock);\n    counter++;\n    pthread_mutex_unlock(&lock);\n    return NULL;\n}\n\nint main() {\n    pthread_t threads[10];\n    pthread_mutex_init(&lock, NULL);\n    for(int i = 0; i < 10; i++) pthread_create(&threads[i], NULL, increment, NULL);\n    for(int i = 0; i < 10; i++) pthread_join(threads[i], NULL);\n    printf(\"Counter: %d\\n\", counter);\n    pthread_mutex_destroy(&lock);\n    return 0;\n}",
+            "explanation": "Demonstrates thread-safe increment of a shared variable using a mutex."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Condition variables",
+            "code": "#include <pthread.h>\n#include <stdio.h>\n\npthread_mutex_t lock;\npthread_cond_t cond;\nint ready = 0;\n\nvoid* wait_thread(void* arg) {\n    pthread_mutex_lock(&lock);\n    while (!ready) pthread_cond_wait(&cond, &lock);\n    printf(\"Condition met!\\n\");\n    pthread_mutex_unlock(&lock);\n    return NULL;\n}\n\nvoid* signal_thread(void* arg) {\n    pthread_mutex_lock(&lock);\n    ready = 1;\n    pthread_cond_signal(&cond);\n    pthread_mutex_unlock(&lock);\n    return NULL;\n}\n\nint main() {\n    pthread_t t1, t2;\n    pthread_mutex_init(&lock, NULL);\n    pthread_cond_init(&cond, NULL);\n    pthread_create(&t1, NULL, wait_thread, NULL);\n    pthread_create(&t2, NULL, signal_thread, NULL);\n    pthread_join(t1, NULL);\n    pthread_join(t2, NULL);\n    pthread_mutex_destroy(&lock);\n    pthread_cond_destroy(&cond);\n    return 0;\n}",
+            "explanation": "Uses a condition variable to synchronize threads based on a shared condition."
+          },
+          {
+            "title": "Thread-local storage",
+            "code": "#include <pthread.h>\n#include <stdio.h>\n\npthread_key_t key;\nvoid destructor(void* value) { printf(\"Thread-specific data freed\\n\"); }\n\nvoid* thread_func(void* arg) {\n    pthread_setspecific(key, arg);\n    printf(\"Thread data: %s\\n\", (char*)pthread_getspecific(key));\n    return NULL;\n}\n\nint main() {\n    pthread_key_create(&key, destructor);\n    pthread_t thread;\n    char* msg = \"Hello Thread\";\n    pthread_create(&thread, NULL, thread_func, msg);\n    pthread_join(thread, NULL);\n    pthread_key_delete(key);\n    return 0;\n}",
+            "explanation": "Demonstrates storing and accessing thread-specific data using pthread keys."
+          }
+        ],
+        "best_practices": [
+          "Always initialize and destroy mutexes and condition variables properly.",
+          "Avoid deadlocks by locking mutexes in a consistent order.",
+          "Use `pthread_join` or detach threads to manage their lifecycle.",
+          "Minimize the work done while holding a mutex to reduce contention.",
+          "Prefer thread-local storage for data specific to a thread."
+        ],
+        "error_handling": [
+          {
+            "error": "EDEADLK",
+            "solution": "Occurs when a deadlock is detected. Ensure consistent locking order or use `pthread_mutex_trylock`."
+          },
+          {
+            "error": "EINVAL",
+            "solution": "Indicates invalid arguments passed to pthread functions. Verify thread, mutex, and condition variable initialization."
+          },
+          {
+            "error": "ENOMEM",
+            "solution": "Insufficient memory to create a new thread. Consider limiting thread creation or using a thread pool."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://man7.org/linux/man-pages/man7/pthreads.7.html",
+        "github": "https://sourceware.org/pthreads-win32/"
+      }
+    },
+    {
+      "id": "cairo",
+      "name": "Cairo",
+      "category": "Graphics / Multimedia",
+      "description": "Cairo is a 2D graphics library that supports vector graphics, including drawing shapes, text, and images. It provides high-quality rendering for multiple output targets such as screens, PDFs, SVGs, and image buffers.",
+      "story": "Cairo was developed to provide a powerful, consistent 2D graphics API across multiple platforms. It is widely used in GUI toolkits, desktop applications, and embedded systems for rendering vector graphics and producing high-quality output.",
+      "installation": {
+        "linux": "sudo apt install libcairo2-dev",
+        "mac": "brew install cairo",
+        "windows": "Download binaries from https://www.cairographics.org/download/"
+      },
+      "usage": {
+        "overview": "Cairo allows developers to draw lines, curves, shapes, text, and images on various surfaces, such as image buffers, PDFs, or windows. It supports transformations, anti-aliasing, and compositing.",
+        "basic_examples": [
+          {
+            "title": "Drawing a simple line on an image",
+            "code": "#include <cairo.h>\n\nint main() {\n    cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 200, 200);\n    cairo_t *cr = cairo_create(surface);\n\n    cairo_set_source_rgb(cr, 0, 0, 0);\n    cairo_move_to(cr, 10, 10);\n    cairo_line_to(cr, 190, 190);\n    cairo_stroke(cr);\n\n    cairo_surface_write_to_png(surface, \"line.png\");\n    cairo_destroy(cr);\n    cairo_surface_destroy(surface);\n    return 0;\n}",
+            "explanation": "Creates a 200x200 image and draws a black diagonal line, saving it as `line.png`."
+          },
+          {
+            "title": "Drawing a rectangle",
+            "code": "#include <cairo.h>\n\nint main() {\n    cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 200, 200);\n    cairo_t *cr = cairo_create(surface);\n\n    cairo_set_source_rgb(cr, 1, 0, 0); // Red color\n    cairo_rectangle(cr, 50, 50, 100, 100);\n    cairo_fill(cr);\n\n    cairo_surface_write_to_png(surface, \"rectangle.png\");\n    cairo_destroy(cr);\n    cairo_surface_destroy(surface);\n    return 0;\n}",
+            "explanation": "Draws a filled red rectangle on a 200x200 image."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Drawing text",
+            "code": "#include <cairo.h>\n\nint main() {\n    cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 300, 100);\n    cairo_t *cr = cairo_create(surface);\n\n    cairo_select_font_face(cr, \"Sans\", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);\n    cairo_set_font_size(cr, 32);\n    cairo_set_source_rgb(cr, 0, 0, 1); // Blue\n    cairo_move_to(cr, 10, 50);\n    cairo_show_text(cr, \"Hello Cairo!\");\n\n    cairo_surface_write_to_png(surface, \"text.png\");\n    cairo_destroy(cr);\n    cairo_surface_destroy(surface);\n    return 0;\n}",
+            "explanation": "Renders bold blue text on an image using Cairo's text functions."
+          },
+          {
+            "title": "Drawing a circle with transformations",
+            "code": "#include <cairo.h>\n\nint main() {\n    cairo_surface_t *surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 200, 200);\n    cairo_t *cr = cairo_create(surface);\n\n    cairo_translate(cr, 100, 100);\n    cairo_scale(cr, 1.5, 1.5);\n    cairo_arc(cr, 0, 0, 50, 0, 2 * 3.14159);\n    cairo_set_source_rgb(cr, 0, 1, 0); // Green\n    cairo_fill(cr);\n\n    cairo_surface_write_to_png(surface, \"circle.png\");\n    cairo_destroy(cr);\n    cairo_surface_destroy(surface);\n    return 0;\n}",
+            "explanation": "Draws a green circle at the center of the image with scaling applied."
+          },
+          {
+            "title": "Exporting to PDF",
+            "code": "#include <cairo.h>\n\nint main() {\n    cairo_surface_t *surface = cairo_pdf_surface_create(\"output.pdf\", 400, 400);\n    cairo_t *cr = cairo_create(surface);\n\n    cairo_set_source_rgb(cr, 0, 0, 0);\n    cairo_move_to(cr, 50, 50);\n    cairo_line_to(cr, 350, 350);\n    cairo_stroke(cr);\n\n    cairo_destroy(cr);\n    cairo_surface_destroy(surface);\n    return 0;\n}",
+            "explanation": "Creates a PDF file and draws a line in it using Cairo."
+          }
+        ],
+        "best_practices": [
+          "Always destroy the Cairo context and surface to free resources.",
+          "Use appropriate surface types (image, PDF, SVG) for your output needs.",
+          "Leverage transformations to simplify drawing operations.",
+          "Use anti-aliasing for smooth graphics.",
+          "Organize drawing code with functions to improve readability."
+        ],
+        "error_handling": [
+          {
+            "error": "CAIRO_STATUS_INVALID_SURFACE",
+            "solution": "Ensure the surface is properly created before performing drawing operations."
+          },
+          {
+            "error": "CAIRO_STATUS_NO_MEMORY",
+            "solution": "Check memory allocation and ensure sufficient resources for large surfaces."
+          },
+          {
+            "error": "CAIRO_STATUS_WRITE_ERROR",
+            "solution": "Ensure the output file path is correct and writable."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.cairographics.org/documentation/",
+        "github": "https://github.com/freedesktop/cairo"
+      }
+    },
+    {
+      "id": "freetype",
+      "name": "FreeType",
+      "category": "Graphics / Font Rendering",
+      "description": "FreeType is a C library for rendering fonts, supporting various font formats such as TrueType, OpenType, Type1, and CFF. It provides functionality to load, rasterize, and render glyphs for text display in applications.",
+      "story": "FreeType was developed to provide a high-quality, portable, and efficient library for font rendering. It is widely used in operating systems, GUI toolkits, games, and embedded systems where precise control over font rendering is needed.",
+      "installation": {
+        "linux": "sudo apt install libfreetype6-dev",
+        "mac": "brew install freetype",
+        "windows": "Download binaries from https://www.freetype.org/download.html or build from source"
+      },
+      "usage": {
+        "overview": "FreeType allows developers to load font files, access glyph metrics, render glyphs into bitmaps or vector paths, and integrate with graphics libraries like Cairo or OpenGL for text rendering.",
+        "basic_examples": [
+          {
+            "title": "Initializing FreeType and loading a font",
+            "code": "#include <ft2build.h>\n#include FT_FREETYPE_H\n#include <stdio.h>\n\nint main() {\n    FT_Library library;\n    FT_Face face;\n\n    if (FT_Init_FreeType(&library)) {\n        printf(\"Could not initialize FreeType library\\n\");\n        return 1;\n    }\n\n    if (FT_New_Face(library, \"arial.ttf\", 0, &face)) {\n        printf(\"Could not load font\\n\");\n        return 1;\n    }\n\n    printf(\"Font loaded: %s\\n\", face->family_name);\n\n    FT_Done_Face(face);\n    FT_Done_FreeType(library);\n    return 0;\n}",
+            "explanation": "Initializes the FreeType library, loads a font file (`arial.ttf`), prints its family name, and cleans up resources."
+          },
+          {
+            "title": "Loading and rendering a glyph",
+            "code": "#include <ft2build.h>\n#include FT_FREETYPE_H\n#include <stdio.h>\n\nint main() {\n    FT_Library library;\n    FT_Face face;\n    FT_Init_FreeType(&library);\n    FT_New_Face(library, \"arial.ttf\", 0, &face);\n\n    FT_Set_Pixel_Sizes(face, 0, 48);\n    if (FT_Load_Char(face, 'A', FT_LOAD_RENDER)) {\n        printf(\"Could not load glyph\\n\");\n        return 1;\n    }\n\n    printf(\"Glyph bitmap width: %d, rows: %d\\n\", face->glyph->bitmap.width, face->glyph->bitmap.rows);\n\n    FT_Done_Face(face);\n    FT_Done_FreeType(library);\n    return 0;\n}",
+            "explanation": "Loads a single character glyph ('A'), renders it to a bitmap, and prints its dimensions."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Rendering text to an image buffer",
+            "code": "// Typically involves iterating through each character,\n// loading glyphs, copying bitmap to a pixel buffer, and\n// using a graphics library (e.g., SDL, Cairo) to display."
+          },
+          {
+            "title": "Accessing glyph metrics",
+            "code": "// Use face->glyph->advance, face->glyph->bitmap_left, face->glyph->bitmap_top\n// to compute positioning when drawing text manually."
+          }
+        ],
+        "best_practices": [
+          "Always initialize and clean up the FreeType library and faces.",
+          "Use appropriate pixel sizes and transformations for high-quality text.",
+          "Cache loaded glyphs to improve rendering performance.",
+          "Combine FreeType with a graphics library for display purposes.",
+          "Handle errors when loading fonts or glyphs to prevent crashes."
+        ],
+        "error_handling": [
+          {
+            "error": "FT_Err_Unknown_File_Format",
+            "solution": "Occurs when the font format is not recognized. Ensure the font file is valid and supported."
+          },
+          {
+            "error": "FT_Err_Cannot_Open_Resource",
+            "solution": "The font file could not be opened. Verify the path and file permissions."
+          },
+          {
+            "error": "FT_Err_Invalid_Argument",
+            "solution": "An invalid argument was passed to a FreeType function. Check parameters carefully."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.freetype.org/documentation.html",
+        "github": "https://gitlab.freedesktop.org/freetype/freetype"
+      }
+    },
+    {
+      "id": "leveldb",
+      "name": "LevelDB",
+      "category": "Database / Storage",
+      "description": "LevelDB is a fast, lightweight, single-purpose key-value storage library written in C++. It provides ordered mapping from string keys to string values with support for batch writes, snapshots, and iterators.",
+      "story": "LevelDB was developed by Google to offer a high-performance key-value store optimized for SSDs and large datasets. It is widely used in applications requiring efficient storage and retrieval of key-value pairs, such as databases, caches, and embedded systems.",
+      "installation": {
+        "linux": "sudo apt install libleveldb-dev",
+        "mac": "brew install leveldb",
+        "windows": "Build from source: https://github.com/google/leveldb"
+      },
+      "usage": {
+        "overview": "LevelDB allows storing arbitrary byte arrays as keys and values, iterating over keys in sorted order, performing batch writes, and creating snapshots of the database state.",
+        "basic_examples": [
+          {
+            "title": "Opening a database and writing a key-value pair",
+            "code": "#include <leveldb/db.h>\n#include <iostream>\n\nint main() {\n    leveldb::DB* db;\n    leveldb::Options options;\n    options.create_if_missing = true;\n\n    leveldb::Status status = leveldb::DB::Open(options, \"testdb\", &db);\n    if (!status.ok()) std::cerr << status.ToString() << std::endl;\n\n    status = db->Put(leveldb::WriteOptions(), \"key1\", \"value1\");\n    if (!status.ok()) std::cerr << status.ToString() << std::endl;\n\n    delete db;\n    return 0;\n}",
+            "explanation": "Opens (or creates) a LevelDB database, writes a key-value pair, and closes the database."
+          },
+          {
+            "title": "Reading a value from the database",
+            "code": "#include <leveldb/db.h>\n#include <iostream>\n\nint main() {\n    leveldb::DB* db;\n    leveldb::Options options;\n    options.create_if_missing = false;\n    leveldb::DB::Open(options, \"testdb\", &db);\n\n    std::string value;\n    leveldb::Status status = db->Get(leveldb::ReadOptions(), \"key1\", &value);\n    if (status.ok()) std::cout << \"Value: \" << value << std::endl;\n    else std::cerr << status.ToString() << std::endl;\n\n    delete db;\n    return 0;\n}",
+            "explanation": "Reads the value associated with a key from the database and prints it."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Batch writes",
+            "code": "#include <leveldb/db.h>\n#include <leveldb/write_batch.h>\n\nleveldb::DB* db; // assume opened\nleveldb::WriteBatch batch;\nbatch.Put(\"key2\", \"value2\");\nbatch.Delete(\"key1\");\ndb->Write(leveldb::WriteOptions(), &batch);",
+            "explanation": "Performs multiple writes/deletes atomically using a WriteBatch."
+          },
+          {
+            "title": "Iterating over keys",
+            "code": "#include <leveldb/db.h>\n#include <iostream>\n\nleveldb::DB* db; // assume opened\nleveldb::Iterator* it = db->NewIterator(leveldb::ReadOptions());\nfor (it->SeekToFirst(); it->Valid(); it->Next()) {\n    std::cout << it->key().ToString() << \" => \" << it->value().ToString() << std::endl;\n}\ndelete it;",
+            "explanation": "Iterates through all key-value pairs in sorted order."
+          },
+          {
+            "title": "Using snapshots",
+            "code": "// leveldb::Snapshot* snapshot = db->GetSnapshot(); // read consistent view\n// db->ReleaseSnapshot(snapshot);",
+            "explanation": "Allows reading a consistent snapshot of the database while writes may continue."
+          }
+        ],
+        "best_practices": [
+          "Always check the return status of operations.",
+          "Use batch writes for better performance.",
+          "Close the database properly to ensure data integrity.",
+          "Use snapshots for consistent reads in concurrent scenarios.",
+          "Avoid storing very large values; LevelDB is optimized for many small key-value pairs."
+        ],
+        "error_handling": [
+          {
+            "error": "leveldb::Status::IOError",
+            "solution": "Indicates a file system or permission error. Check database path and permissions."
+          },
+          {
+            "error": "leveldb::Status::NotFound",
+            "solution": "Key does not exist in the database. Handle missing keys gracefully."
+          },
+          {
+            "error": "leveldb::Status::Corruption",
+            "solution": "Database corruption detected. Consider backup and restore or repair procedures."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://github.com/google/leveldb",
+        "github": "https://github.com/google/leveldb"
+      }
+    },
+    {
+      "id": "bzip2",
+      "name": "bzip2",
+      "category": "Compression / Archiving",
+      "description": "bzip2 is a high-quality data compression library and tool that uses the Burrows-Wheeler algorithm and Huffman coding. It provides better compression ratios than traditional gzip for many types of files.",
+      "story": "bzip2 was developed by Julian Seward in 1996–1998 as an open-source compression library and command-line tool. It became popular for compressing large datasets in Unix-like systems due to its high compression efficiency and simplicity.",
+      "installation": {
+        "linux": "sudo apt install libbz2-dev bzip2",
+        "mac": "brew install bzip2",
+        "windows": "Use binaries from https://sourceforge.net/projects/bzip2/"
+      },
+      "usage": {
+        "overview": "bzip2 provides both a command-line tool for file compression and a C library (libbz2) for programmatically compressing/decompressing data streams. It supports streams, file-level compression, and integration with other tools like tar.",
+        "basic_examples": [
+          {
+            "title": "Compressing a file using command line",
+            "code": "bzip2 myfile.txt",
+            "explanation": "Compresses `myfile.txt` to `myfile.txt.bz2` using the bzip2 tool."
+          },
+          {
+            "title": "Decompressing a file",
+            "code": "bunzip2 myfile.txt.bz2",
+            "explanation": "Decompresses the `.bz2` file back to its original format."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using bzip2 library in C",
+            "code": "#include <bzlib.h>\n#include <stdio.h>\n\nint main() {\n    FILE *source = fopen(\"input.txt\", \"rb\");\n    FILE *dest = fopen(\"output.bz2\", \"wb\");\n    BZFILE *bz = BZ2_bzWriteOpen(NULL, dest, 9, 0, 30);\n    char buffer[1024];\n    int n;\n    while ((n = fread(buffer, 1, sizeof(buffer), source)) > 0) {\n        BZ2_bzWrite(NULL, bz, buffer, n);\n    }\n    BZ2_bzWriteClose(NULL, bz, 0, NULL, NULL);\n    fclose(source);\n    fclose(dest);\n    return 0;\n}",
+            "explanation": "Compresses a file programmatically using the libbz2 C library."
+          },
+          {
+            "title": "Decompressing using bzip2 library",
+            "code": "#include <bzlib.h>\n#include <stdio.h>\n\nint main() {\n    FILE *source = fopen(\"output.bz2\", \"rb\");\n    FILE *dest = fopen(\"restored.txt\", \"wb\");\n    BZFILE *bz = BZ2_bzReadOpen(NULL, source, 0, 0, NULL, 0);\n    char buffer[1024];\n    int n;\n    while ((n = BZ2_bzRead(NULL, bz, buffer, sizeof(buffer))) > 0) {\n        fwrite(buffer, 1, n, dest);\n    }\n    BZ2_bzReadClose(NULL, bz);\n    fclose(source);\n    fclose(dest);\n    return 0;\n}",
+            "explanation": "Decompresses a `.bz2` file programmatically using libbz2."
+          }
+        ],
+        "best_practices": [
+          "Choose an appropriate compression level (1–9) based on speed vs size trade-off.",
+          "Use streaming APIs for large files to reduce memory usage.",
+          "Close all file handles and BZFILE objects properly to avoid corruption.",
+          "Use file extensions `.bz2` for compressed files for clarity.",
+          "Combine with tar (tar.bz2) for archiving multiple files efficiently."
+        ],
+        "error_handling": [
+          {
+            "error": "BZ_CONFIG_ERROR",
+            "solution": "Occurs if library configuration is invalid. Ensure libbz2 is compiled and linked correctly."
+          },
+          {
+            "error": "BZ_IO_ERROR",
+            "solution": "Indicates a file I/O problem. Verify file paths, permissions, and disk space."
+          },
+          {
+            "error": "BZ_MEM_ERROR",
+            "solution": "Memory allocation failed. Consider using smaller buffers or freeing memory before compression."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://sourceware.org/bzip2/manual.html",
+        "github": "https://sourceforge.net/p/bzip2/code/HEAD/tree/"
+      }
+    },
+    {
+      "id": "lz4",
+      "name": "LZ4",
+      "category": "Compression / Archiving",
+      "description": "LZ4 is an extremely fast lossless compression algorithm and library. It focuses on compression and decompression speed while maintaining reasonable compression ratios, making it ideal for real-time applications and large data streams.",
+      "story": "LZ4 was developed by Yann Collet in 2011 to provide high-speed compression with minimal CPU overhead. It is widely used in databases, game engines, file systems, and network protocols where fast compression is critical.",
+      "installation": {
+        "linux": "sudo apt install liblz4-dev",
+        "mac": "brew install lz4",
+        "windows": "Download precompiled binaries or build from source: https://github.com/lz4/lz4"
+      },
+      "usage": {
+        "overview": "LZ4 allows compressing and decompressing data either via command-line tools or C library functions. It supports stream compression, block compression, and integration with memory buffers for high-performance applications.",
+        "basic_examples": [
+          {
+            "title": "Compress a file using CLI",
+            "code": "lz4 input.txt output.lz4",
+            "explanation": "Compresses `input.txt` into `output.lz4` using LZ4's command-line tool."
+          },
+          {
+            "title": "Decompress a file using CLI",
+            "code": "lz4 -d output.lz4 restored.txt",
+            "explanation": "Decompresses `output.lz4` back to `restored.txt`."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using LZ4 library in C to compress memory",
+            "code": "#include <lz4.h>\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    const char* input = \"This is some text to compress.\";\n    int inputSize = strlen(input) + 1;\n    char compressed[256];\n\n    int compressedSize = LZ4_compress_default(input, compressed, inputSize, sizeof(compressed));\n    if (compressedSize <= 0) {\n        printf(\"Compression failed\\n\");\n        return 1;\n    }\n    printf(\"Compressed size: %d\\n\", compressedSize);\n    return 0;\n}",
+            "explanation": "Compresses a string in memory using LZ4 C API and prints the compressed size."
+          },
+          {
+            "title": "Decompressing memory with LZ4",
+            "code": "#include <lz4.h>\n#include <stdio.h>\n#include <string.h>\n\nint main() {\n    const char* original = \"Hello, LZ4!\";\n    int originalSize = strlen(original) + 1;\n    char compressed[256];\n    int compressedSize = LZ4_compress_default(original, compressed, originalSize, sizeof(compressed));\n\n    char decompressed[256];\n    int decompressedSize = LZ4_decompress_safe(compressed, decompressed, compressedSize, sizeof(decompressed));\n    if (decompressedSize < 0) {\n        printf(\"Decompression failed\\n\");\n        return 1;\n    }\n    printf(\"Decompressed: %s\\n\", decompressed);\n    return 0;\n}",
+            "explanation": "Decompresses data in memory and prints the original string."
+          },
+          {
+            "title": "Streaming compression",
+            "code": "// LZ4 provides streaming API using LZ4_stream_t and LZ4_streamDecode_t for large data streams.\n// See documentation for detailed usage."
+          }
+        ],
+        "best_practices": [
+          "Use LZ4 when compression/decompression speed is more important than maximum compression ratio.",
+          "Always check return values of library functions for errors.",
+          "Use streaming API for large or continuous data streams.",
+          "Pre-allocate buffers large enough to hold worst-case compressed data.",
+          "Combine with other tools like zstd for layered compression if needed."
+        ],
+        "error_handling": [
+          {
+            "error": "LZ4_compress_default returned <= 0",
+            "solution": "Compression failed. Ensure output buffer is large enough and input data is valid."
+          },
+          {
+            "error": "LZ4_decompress_safe returned < 0",
+            "solution": "Decompression failed. Verify the compressed data is not corrupted and buffer sizes are correct."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://lz4.github.io/lz4/",
+        "github": "https://github.com/lz4/lz4"
+      }
+    },
+    {
+      "id": "libwebsockets",
+      "name": "libwebsockets",
+      "category": "Networking / WebSocket",
+      "description": "libwebsockets is a lightweight C library for building WebSocket servers, clients, and HTTP(S) servers. It supports asynchronous, event-driven communication over WebSocket and HTTP protocols.",
+      "story": "libwebsockets was created by Andy Green to provide a fast, lightweight, and flexible WebSocket library in C. It is widely used in IoT, embedded systems, and web applications where low-level, high-performance WebSocket support is required.",
+      "installation": {
+        "linux": "sudo apt install libwebsockets-dev",
+        "mac": "brew install libwebsockets",
+        "windows": "Build from source: https://libwebsockets.org"
+      },
+      "usage": {
+        "overview": "libwebsockets provides APIs for creating WebSocket clients and servers, handling events like connections, messages, and disconnections, and integrating with HTTP and SSL/TLS for secure communication.",
+        "basic_examples": [
+          {
+            "title": "Creating a simple WebSocket server",
+            "code": "#include <libwebsockets.h>\n#include <string.h>\n#include <signal.h>\n\nstatic int interrupted = 0;\n\nstatic int callback_echo(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len) {\n    switch (reason) {\n        case LWS_CALLBACK_RECEIVE:\n            lws_write(wsi, (unsigned char *)in, len, LWS_WRITE_TEXT);\n            break;\n        default:\n            break;\n    }\n    return 0;\n}\n\nint main() {\n    struct lws_context_creation_info info;\n    memset(&info, 0, sizeof(info));\n\n    struct lws_protocols protocols[] = {\n        { \"echo-protocol\", callback_echo, 0, 1024, },\n        { NULL, NULL, 0, 0 }\n    };\n\n    info.port = 8080;\n    info.protocols = protocols;\n\n    struct lws_context *context = lws_create_context(&info);\n\n    while (!interrupted) {\n        lws_service(context, 1000);\n    }\n\n    lws_context_destroy(context);\n    return 0;\n}",
+            "explanation": "Sets up a simple WebSocket echo server on port 8080 using libwebsockets."
+          },
+          {
+            "title": "Creating a simple WebSocket client",
+            "code": "// Client code involves creating context, connecting to server using lws_client_connect_via_info,\n// and handling events like LWS_CALLBACK_CLIENT_RECEIVE."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Using SSL/TLS",
+            "code": "// Configure SSL options in lws_context_creation_info for secure WebSocket connections using certificates."
+          },
+          {
+            "title": "Handling multiple protocols",
+            "code": "// Define multiple lws_protocols with different callbacks and attach them to the context."
+          },
+          {
+            "title": "Asynchronous messaging",
+            "code": "// Use lws_callback_on_writable() to schedule asynchronous writes without blocking the event loop."
+          }
+        ],
+        "best_practices": [
+          "Use the event-driven API for non-blocking communication.",
+          "Handle all WebSocket and HTTP events in callbacks to maintain responsiveness.",
+          "Use SSL/TLS for secure connections where needed.",
+          "Predefine protocols to organize multiple types of WebSocket messages.",
+          "Clean up the context and connections properly to avoid memory leaks."
+        ],
+        "error_handling": [
+          {
+            "error": "lws_create_context failed",
+            "solution": "Ensure port is free, protocols are defined correctly, and SSL/TLS paths are valid if used."
+          },
+          {
+            "error": "WebSocket connection failed",
+            "solution": "Check server availability, firewall, and network connectivity."
+          },
+          {
+            "error": "Memory allocation errors",
+            "solution": "Verify sufficient system memory and proper use of lws_context and buffers."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://libwebsockets.org/lws-api-doc-master/html/",
+        "github": "https://github.com/warmcat/libwebsockets"
+      }
+    },
+    {
+      "id": "libevent",
+      "name": "libevent",
+      "category": "Networking / Event-driven",
+      "description": "libevent is a high-performance C library that provides asynchronous event notification. It allows applications to execute callbacks when file descriptors, signals, or timers become active, enabling scalable network servers and event-driven programs.",
+      "story": "libevent was created by Niels Provos in 2000 to simplify the development of high-performance network applications. It abstracts the underlying OS event notification mechanisms (like epoll, kqueue, and select), making it portable and efficient across platforms.",
+      "installation": {
+        "linux": "sudo apt install libevent-dev",
+        "mac": "brew install libevent",
+        "windows": "Build from source: https://libevent.org/"
+      },
+      "usage": {
+        "overview": "libevent allows registering events for file descriptors, signals, and timers, and associates callbacks with those events. It supports event loops that wait for multiple events simultaneously, making it ideal for network servers, asynchronous I/O, and real-time applications.",
+        "basic_examples": [
+          {
+            "title": "Simple timer event",
+            "code": "#include <event2/event.h>\n#include <stdio.h>\n#include <stdlib.h>\n#include <unistd.h>\n\nvoid timer_cb(evutil_socket_t fd, short what, void *arg) {\n    printf(\"Timer fired!\\n\");\n}\n\nint main() {\n    struct event_base *base = event_base_new();\n    struct event *timer_event;\n    struct timeval one_sec = {1, 0};\n\n    timer_event = event_new(base, -1, EV_PERSIST, timer_cb, NULL);\n    event_add(timer_event, &one_sec);\n\n    event_base_dispatch(base);\n\n    event_free(timer_event);\n    event_base_free(base);\n    return 0;\n}",
+            "explanation": "Creates a persistent timer event that fires every second using libevent."
+          },
+          {
+            "title": "File descriptor event",
+            "code": "// Monitor a socket or stdin for read/write readiness and call a callback when data is available."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Signal handling",
+            "code": "// Register signals like SIGINT to perform graceful shutdowns using evsignal_new() and event_add()."
+          },
+          {
+            "title": "HTTP server with libevent",
+            "code": "// Use libevent’s evhttp API to create lightweight HTTP servers handling requests asynchronously."
+          },
+          {
+            "title": "Integrating multiple events",
+            "code": "// Combine timers, I/O, and signals in a single event loop for scalable applications."
+          }
+        ],
+        "best_practices": [
+          "Use the provided event loop for all asynchronous operations.",
+          "Avoid blocking calls inside callbacks to maintain responsiveness.",
+          "Use EV_PERSIST for repeating events instead of manually re-adding events.",
+          "Properly free events and the event base to avoid memory leaks.",
+          "Leverage evhttp or bufferevent for easier network programming."
+        ],
+        "error_handling": [
+          {
+            "error": "event_base_new failed",
+            "solution": "Check system resources; ensure that the library is properly installed."
+          },
+          {
+            "error": "event_add failed",
+            "solution": "Verify valid event parameters and non-conflicting resources."
+          },
+          {
+            "error": "Segmentation fault in callback",
+            "solution": "Ensure callback functions handle data correctly and buffers are valid."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://libevent.org/",
+        "github": "https://github.com/libevent/libevent"
+      }
+    },
+    {
+      "id": "libev",
+      "name": "libev",
+      "category": "Networking / Event-driven",
+      "description": "libev is a high-performance event loop library in C that provides asynchronous I/O, timers, signals, and child process handling. It is designed for efficiency and scalability in networked and event-driven applications.",
+      "story": "libev was created by Marc Lehmann as a portable and efficient alternative to other event libraries like libevent. It abstracts platform-specific event notification mechanisms (epoll, kqueue, select) and provides a consistent API for building fast asynchronous programs.",
+      "installation": {
+        "linux": "sudo apt install libev-dev",
+        "mac": "brew install libev",
+        "windows": "Build from source: http://software.schmorp.de/pkg/libev.html"
+      },
+      "usage": {
+        "overview": "libev allows you to register watchers for I/O events, timers, signals, and child processes. The library invokes callback functions when events occur, making it suitable for scalable network servers and asynchronous applications.",
+        "basic_examples": [
+          {
+            "title": "Simple timer watcher",
+            "code": "#include <ev.h>\n#include <stdio.h>\n\nstatic void timeout_cb(EV_P_ ev_timer *w, int revents) {\n    printf(\"Timer fired!\\n\");\n}\n\nint main() {\n    struct ev_loop *loop = EV_DEFAULT;\n    ev_timer timer_watcher;\n\n    ev_timer_init(&timer_watcher, timeout_cb, 1.0, 0.0);\n    ev_timer_start(loop, &timer_watcher);\n\n    ev_run(loop, 0);\n    return 0;\n}",
+            "explanation": "Creates a one-shot timer that fires after 1 second using libev."
+          },
+          {
+            "title": "I/O watcher example",
+            "code": "// Monitor a file descriptor for readability using ev_io watcher and a callback function."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Signal handling",
+            "code": "// Use ev_signal watcher to handle signals like SIGINT and perform graceful shutdowns."
+          },
+          {
+            "title": "Child process monitoring",
+            "code": "// Use ev_child watcher to detect when a child process exits and handle it asynchronously."
+          },
+          {
+            "title": "Combining multiple watchers",
+            "code": "// Use ev_loop with timers, I/O, and signals together for complex event-driven programs."
+          }
+        ],
+        "best_practices": [
+          "Always use the default event loop unless multiple loops are required.",
+          "Avoid blocking calls in callbacks to maintain responsiveness.",
+          "Use proper initialization and start/stop watchers correctly.",
+          "Free resources and watchers when no longer needed.",
+          "Combine I/O, timer, and signal watchers efficiently to scale network applications."
+        ],
+        "error_handling": [
+          {
+            "error": "ev_run returns unexpectedly",
+            "solution": "Ensure all watchers are initialized and started correctly; check for unhandled exceptions in callbacks."
+          },
+          {
+            "error": "Segmentation fault in callback",
+            "solution": "Verify that watcher pointers and user data are valid and properly allocated."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "http://software.schmorp.de/pkg/libev.html",
+        "github": "https://github.com/enki/libev"
+      }
+    },
+    {
+      "id": "glfw",
+      "name": "GLFW",
+      "category": "CLI/Utils",
+      "description": "GLFW is an open-source library for creating windows, contexts, and handling input and events in OpenGL, OpenGL ES, and Vulkan applications. It is designed to be simple, portable, and lightweight, ideal for graphics and game development.",
+      "story": "GLFW was created by Camilla Löwy to provide a simple, cross-platform API for creating windows and managing input in graphics applications. It abstracts platform-specific details and integrates smoothly with OpenGL, making it a popular choice for developers building real-time graphics, games, and simulations.",
+      "installation": {
+        "linux": "sudo apt install libglfw3-dev",
+        "mac": "brew install glfw",
+        "windows": "Download precompiled binaries or build from source from https://www.glfw.org/"
+      },
+      "usage": {
+        "overview": "GLFW provides functions to create windows, handle keyboard and mouse input, manage OpenGL or Vulkan contexts, and handle events. It supports multiple monitors, full-screen modes, and high-DPI scaling.",
+        "basic_examples": [
+          {
+            "title": "Creating a simple window",
+            "code": "#include <GLFW/glfw3.h>\n#include <iostream>\n\nint main() {\n    if (!glfwInit()) {\n        std::cerr << \"Failed to initialize GLFW\" << std::endl;\n        return -1;\n    }\n\n    GLFWwindow* window = glfwCreateWindow(640, 480, \"Hello GLFW\", nullptr, nullptr);\n    if (!window) {\n        glfwTerminate();\n        return -1;\n    }\n\n    glfwMakeContextCurrent(window);\n\n    while (!glfwWindowShouldClose(window)) {\n        glClear(GL_COLOR_BUFFER_BIT);\n        glfwSwapBuffers(window);\n        glfwPollEvents();\n    }\n\n    glfwDestroyWindow(window);\n    glfwTerminate();\n    return 0;\n}",
+            "explanation": "Initializes GLFW, creates a 640x480 window, and enters a loop to handle events and update the window until it is closed."
+          },
+          {
+            "title": "Handling keyboard input",
+            "code": "void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {\n    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)\n        glfwSetWindowShouldClose(window, true);\n}\n\nint main() {\n    glfwInit();\n    GLFWwindow* window = glfwCreateWindow(640, 480, \"Input Example\", nullptr, nullptr);\n    glfwMakeContextCurrent(window);\n    glfwSetKeyCallback(window, key_callback);\n\n    while (!glfwWindowShouldClose(window)) {\n        glfwSwapBuffers(window);\n        glfwPollEvents();\n    }\n    glfwDestroyWindow(window);\n    glfwTerminate();\n    return 0;\n}",
+            "explanation": "Registers a keyboard callback to close the window when the Escape key is pressed."
+          }
+        ],
+        "advanced_examples": [
+          {
+            "title": "Mouse input handling",
+            "code": "void mouse_callback(GLFWwindow* window, double xpos, double ypos) {\n    std::cout << \"Mouse moved to: (\" << xpos << \", \" << ypos << \")\" << std::endl;\n}\n\nint main() {\n    glfwInit();\n    GLFWwindow* window = glfwCreateWindow(640, 480, \"Mouse Example\", nullptr, nullptr);\n    glfwMakeContextCurrent(window);\n    glfwSetCursorPosCallback(window, mouse_callback);\n\n    while (!glfwWindowShouldClose(window)) {\n        glfwSwapBuffers(window);\n        glfwPollEvents();\n    }\n    glfwDestroyWindow(window);\n    glfwTerminate();\n    return 0;\n}",
+            "explanation": "Tracks mouse movements using a cursor position callback."
+          },
+          {
+            "title": "Full-screen window",
+            "code": "GLFWmonitor* primary = glfwGetPrimaryMonitor();\nconst GLFWvidmode* mode = glfwGetVideoMode(primary);\nGLFWwindow* window = glfwCreateWindow(mode->width, mode->height, \"FullScreen\", primary, nullptr);",
+            "explanation": "Creates a full-screen window using the primary monitor’s video mode."
+          },
+          {
+            "title": "V-Sync",
+            "code": "glfwSwapInterval(1);",
+            "explanation": "Enables vertical synchronization to limit the frame rate to the display refresh rate, reducing screen tearing."
+          },
+          {
+            "title": "Handling multiple windows",
+            "code": "GLFWwindow* window1 = glfwCreateWindow(400, 300, \"Window 1\", nullptr, nullptr);\nGLFWwindow* window2 = glfwCreateWindow(400, 300, \"Window 2\", nullptr, window1);",
+            "explanation": "Demonstrates creating multiple windows with shared OpenGL contexts."
+          }
+        ],
+        "best_practices": [
+          "Always call `glfwTerminate()` before exiting to clean up resources.",
+          "Use callbacks for input handling rather than polling for cleaner code.",
+          "Check return values of GLFW functions to handle initialization or creation errors.",
+          "Use `glfwSwapInterval(1)` for smoother rendering.",
+          "Keep rendering and event polling in separate loops for responsive UI."
+        ],
+        "error_handling": [
+          {
+            "error": "GLFW_NOT_INITIALIZED",
+            "solution": "Ensure `glfwInit()` is called successfully before using other GLFW functions."
+          },
+          {
+            "error": "Failed to create GLFW window",
+            "solution": "Verify that the requested video mode and context hints are supported by your system."
+          },
+          {
+            "error": "OpenGL context not current",
+            "solution": "Call `glfwMakeContextCurrent(window)` before issuing OpenGL commands."
+          }
+        ]
+      },
+      "references": {
+        "official_docs": "https://www.glfw.org/docs/latest/",
+        "github": "https://github.com/glfw/glfw"
+      }
+    }
+  ]
