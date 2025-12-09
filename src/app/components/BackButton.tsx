@@ -13,8 +13,8 @@ export default function BackButton({text, className}: ButtonProps){
         <button
          type="button"
          onClick={() => router.back()}
-         className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ${className}`}>
-            ⬅ {text}
+         className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 -mt-10 mb-8 -ml-30 ${className}`}>
+            ⬅ Back
         </button>
     )
 }

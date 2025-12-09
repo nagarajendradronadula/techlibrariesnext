@@ -1,0 +1,36 @@
+{
+  "id": "typescript",
+  "name": "TypeScript",
+  "logo": "typescript_lang.png",
+  "description": "TypeScript is a strongly typed, object-oriented programming language that builds on JavaScript, giving you better tooling, error detection, and code quality at any scale. Developed and maintained by Microsoft since 2012, TypeScript is a syntactic superset of JavaScript, meaning that any valid JavaScript code is also valid TypeScript code. The language adds optional static type definitions to JavaScript, enabling developers to catch errors early during development through a sophisticated type system, making JavaScript development more efficient, maintainable, and scalable. TypeScript code compiles down to clean, readable, standards-compliant JavaScript that runs anywhere JavaScript runs: in web browsers, on Node.js servers, in mobile applications, or in any JavaScript engine. It fully supports all modern JavaScript features from ECMAScript standards while providing additional powerful capabilities like interfaces for defining contracts, generics for reusable type-safe code, enums for named constants, decorators for meta-programming, advanced type inference that understands complex patterns, union and intersection types, type guards, and much more. TypeScript's type system is structural rather than nominal, meaning types are compatible based on their structure rather than explicit declarations, which aligns well with JavaScript's dynamic nature. The language provides excellent IDE support with intelligent code completion, refactoring tools, inline documentation, and real-time error detection, dramatically improving developer productivity and reducing bugs. TypeScript is particularly valuable for large-scale applications, team collaboration, and long-term code maintenance where type safety, clear interfaces, and self-documenting code are crucial. It has become the de facto standard for enterprise JavaScript development and is widely adopted across the industry, from startups to Fortune 500 companies. TypeScript's gradual typing system allows developers to adopt it incrementally, adding types to existing JavaScript codebases at their own pace without requiring a complete rewrite. The language has a vibrant ecosystem with extensive community support, comprehensive documentation, and integration with virtually every major JavaScript framework, library, and build tool. TypeScript's influence extends beyond just adding types; it has shaped modern JavaScript development practices, influenced ECMAScript proposals, and set standards for how large-scale JavaScript applications should be structured and maintained.",
+  "story": "TypeScript was developed by Microsoft and first released in October 2012, created by Anders Hejlsberg, the renowned language designer who also created C#, Delphi, and Turbo Pascal. The motivation behind TypeScript emerged from Microsoft's own struggles with building and maintaining large-scale JavaScript applications, particularly for projects like Office 365 and Visual Studio Online. The lack of static typing in JavaScript made code maintenance, refactoring, and collaboration across large teams extremely challenging, leading to runtime errors that could have been caught at compile time. Microsoft recognized that while JavaScript was ubiquitous and powerful, it lacked the tooling support and type safety that developers needed for enterprise-scale applications. TypeScript was designed as a pragmatic solution that would provide the benefits of static typing while maintaining full backward compatibility with existing JavaScript code and the entire JavaScript ecosystem. The language was open-sourced from the beginning, with development happening publicly on GitHub, which helped build community trust and adoption. TypeScript's design philosophy emphasized gradual adoption, allowing developers to add types incrementally to existing JavaScript codebases without requiring a complete rewrite. The first major breakthrough came in 2014 when the Angular team at Google announced that Angular 2 would be built with TypeScript, providing significant validation and visibility for the language. This decision was driven by Angular's need for better tooling, maintainability, and developer experience for large applications. Following Angular's adoption, other major frameworks and libraries began embracing TypeScript, including React (with extensive TypeScript support), Vue 3 (rewritten in TypeScript), and countless others. The language gained momentum in the open-source community, with major projects like Visual Studio Code (itself written in TypeScript), Slack's desktop application, Asana, and Airbnb's frontend infrastructure adopting it. TypeScript's type system has evolved significantly over the years, introducing advanced features like conditional types, mapped types, template literal types, and sophisticated type inference that can understand complex JavaScript patterns. The language has maintained its commitment to tracking ECMAScript standards, ensuring that every new JavaScript feature is supported in TypeScript, often with enhanced type safety. Microsoft's investment in TypeScript has been substantial, with a dedicated team continuously improving the compiler's performance, error messages, and type-checking capabilities. The TypeScript compiler has become remarkably fast, capable of type-checking millions of lines of code efficiently. The language's impact extends beyond just adding types to JavaScript; it has influenced how developers think about code organization, API design, and software architecture. TypeScript's success has inspired similar efforts in other dynamic languages and has become a model for how to add static typing to an existing language ecosystem. Today, TypeScript is one of the most loved and widely used programming languages, consistently ranking high in developer satisfaction surveys. Its adoption continues to grow across startups, enterprises, and open-source projects, cementing its position as an essential tool for modern web development. The language continues to evolve with regular releases every few months, adding new features, improving type inference, and maintaining compatibility with the ever-evolving JavaScript ecosystem.",
+  "official_docs": "https://www.typescriptlang.org/docs/",
+  "github": "https://github.com/microsoft/TypeScript",
+  "founders": [
+    {
+      "name": "Anders Hejlsberg",
+      "image": "https://tse3.mm.bing.net/th/id/OIP.LE6ufReaNeAUPErFCL8VdAHaJ3?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "twitter": "https://twitter.com/ahejlsberg",
+      "linkedin": "https://www.linkedin.com/in/anders-hejlsberg-4b7568/",
+      "github": "https://github.com/ahejlsberg"
+    }
+  ],
+  "use_cases": [
+    {
+      "company": "Microsoft",
+      "purpose": "Office 365, Visual Studio Code, and various web applications."
+    },
+    {
+      "company": "Slack",
+      "purpose": "Desktop and web applications for better type safety."
+    },
+    {
+      "company": "Airbnb",
+      "purpose": "Frontend applications and internal tools."
+    },
+    {
+      "company": "Asana",
+      "purpose": "Web application development with improved developer experience."
+    }
+  ]
+}

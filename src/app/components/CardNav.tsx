@@ -3,8 +3,8 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Link from "next/link";
-// use your own icon import if react-icons is not available
-import { GoArrowUpRight } from "react-icons/go";
+import { useRouter } from "next/navigation";
+import { FiSearch } from "react-icons/fi";
 
 type CardNavLink = {
   label: string;
@@ -39,28 +39,29 @@ export interface CardNavProps {
 }
 
 const CardNav: React.FC<CardNavProps> = ({
-  logo,
-  logoAlt = "Logo",
   items,
   languageData = [],
   className = "",
   ease = "power3.out",
   baseColor = "#fff",
   menuColor,
-  buttonBgColor,
-  buttonTextColor,
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<(HTMLDivElement | HTMLAnchorElement)[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const router = useRouter();
 
   const calculateHeight = () => {
     const navEl = navRef.current;
-    if (!navEl) return 260;
+    if (!navEl) return 400;
 
-    if (typeof window === "undefined") return 260;
+    if (typeof window === "undefined") return 400;
     
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
     if (isMobile) {
@@ -88,7 +89,7 @@ const CardNav: React.FC<CardNavProps> = ({
         return topBar + contentHeight + padding;
       }
     }
-    return 260;
+    return 450;
   };
 
   const createTimeline = () => {
@@ -165,12 +166,18 @@ const CardNav: React.FC<CardNavProps> = ({
     const tl = tlRef.current;
     if (!tl) return;
     if (!isExpanded) {
+      if (isSearchOpen) {
+        setIsSearchOpen(false);
+      }
       setIsHamburgerOpen(true);
       setIsExpanded(true);
       tl.play(0);
     } else {
       setIsHamburgerOpen(false);
-      tl.eventCallback("onReverseComplete", () => setIsExpanded(false));
+      tl.eventCallback("onReverseComplete", () => {
+        setIsExpanded(false);
+        tl.eventCallback("onReverseComplete", null);
+      });
       tl.reverse();
     }
   };
@@ -179,72 +186,86 @@ const CardNav: React.FC<CardNavProps> = ({
 
   return (
     <div
-      className={`card-nav-container relative mx-auto w-[95%] max-w-[1000px] z-[99] mt-[1.2em] md:mt-[2em] mb-4 ${className} bg-cyan-100 ${isExpanded ? "rounded-4xl" : "rounded-full"}  shadow-md shadow-gray-400 duration-25 ease-in-out sticky top-10`}
+      className={` bg-white card-nav-container mx-auto w-[95%] max-w-[1000px] ${className} ${isExpanded || isSearchOpen ? "rounded-4xl" : "rounded-full"} shadow-md shadow-gray-600 duration-25 ease-in-out fixed top-5 left-1/2 -translate-x-1/2 z-50`}
     >
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? "open rounded-4xl" : "rounded-full"} block h-[60px] p-0 shadow-md relative overflow-hidden will-change-[height] duration-25 ease-in-out`}
+        className="card-nav rounded-full block h-[60px] p-0 shadow-md relative"
         style={{ backgroundColor: baseColor }}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 pl-[1.1rem] z-[2]">
-          <div
-            className={`hamburger-menu ${isHamburgerOpen ? "open" : ""} group h-full flex flex-col items-center justify-center cursor-pointer gap-[6px] order-2 md:order-none`}
-            onClick={toggleMenu}
-            role="button"
-            aria-label={isExpanded ? "Close menu" : "Open menu"}
-            tabIndex={0}
-            style={{ color: menuColor || "#000" }}
-          >
-            <div
-              className={`mx-4 hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${
-                isHamburgerOpen ? "translate-y-[4px] rotate-45" : ""
-              } group-hover:opacity-75`}
-            />
-            <div
-              className={`hamburger-line w-[30px] h-[2px] bg-current transition-[transform,opacity,margin] duration-300 ease-linear [transform-origin:50%_50%] ${
-                isHamburgerOpen ? "-translate-y-[4px] -rotate-45" : ""
-              } group-hover:opacity-75`}
-            />
+        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 px-4 z-[2]">
+          <div className="flex gap-3">
+            <Link href="/" className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-sm border border-white/30">
+              All Languages
+            </Link>
+            <Link href="/LibraryPage" className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-sm border border-white/30">
+              All Libraries
+            </Link>
           </div>
 
-          <div className="mx-4 logo-container flex items-center order-1 md:order-none">
+          <div className="absolute left-1/2 -translate-x-1/2 logo-container flex items-center">
             <Link href="/" className="flex items-center text-white hover:text-cyan-300 font-semibold text-xl transition-colors duration-200">
               Tech Libraries
             </Link>
           </div>
 
-          <Link href="/LibraryPage" className="mx-4 p-4 hidden md:block text-white hover:text-cyan-300 transition-colors duration-200 order-3">
-            All Libraries
-          </Link>
-        </div>
-
-        <div
-          className={`card-nav-content absolute left-0 right-0 top-[60px] bottom-0 p-4 flex flex-col gap-4 justify-start z-[1] ${
-            isExpanded
-              ? "visible pointer-events-auto"
-              : "invisible pointer-events-none"
-          }`}
-          aria-hidden={!isExpanded}
-        >
-          <div className="flex flex-wrap justify-center items-center gap-2" ref={(el) => { if (el) cardsRef.current[0] = el; }}>
-            {languageData.map((language) => (
-              <Link
-                key={language.id}
-                href={`/LanguagePage/${language.id}`}
-                className="flex flex-col items-center justify-center w-50 p-3 m-1 bg-gray-700 hover:bg-gray-600 rounded-4xl transition-colors duration-200 text-white hover:text-cyan-300 min-h-[60px]"
-              >
-                <img src={language.logo} alt={language.name} className="w-8 h-8 m-1 rounded-full mb-1" />
-                <span className="text-sm text-center m-1">{language.name}</span>
-              </Link>
-            ))}
+          <div className="relative z-[60]">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-white" size={20} />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => {
+                const value = e.target.value;
+                setSearchQuery(value);
+                if (value.trim()) {
+                  const query = value.toLowerCase();
+                  const results = languageData.filter(lang => 
+                    lang.name.toLowerCase().includes(query) || 
+                    lang.id.toLowerCase().includes(query)
+                  );
+                  setSearchResults(results);
+                  setShowResults(true);
+                } else {
+                  setShowResults(false);
+                  setSearchResults([]);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  const query = searchQuery.toLowerCase().trim();
+                  const language = languageData.find(lang => lang.name.toLowerCase() === query || lang.id.toLowerCase() === query);
+                  if (language) {
+                    router.push(`/LanguagePage/${language.id}`);
+                    setSearchQuery("");
+                    setShowResults(false);
+                  } else {
+                    router.push(`/LibraryPage?search=${encodeURIComponent(query)}`);
+                    setSearchQuery("");
+                    setShowResults(false);
+                  }
+                }
+              }}
+              className="pl-10 pr-4 py-2 rounded-full border-2 border-white/30 focus:border-cyan-500 focus:outline-none text-white placeholder-white w-64"
+            />
+            {searchQuery.trim() && searchResults.length > 0 && (
+              <div className="fixed mt-14 w-64 bg-white rounded-lg shadow-2xl border-2 border-gray-300 max-h-60 overflow-y-auto">
+                {searchResults.map((result) => (
+                  <div
+                    key={result.id}
+                    onClick={() => {
+                      router.push(`/LanguagePage/${result.id}`);
+                      setSearchQuery("");
+                      setSearchResults([]);
+                    }}
+                    className="block px-4 py-3 text-gray-800 hover:bg-gray-100 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0"
+                  >
+                    {result.name}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <Link
-            href="/LibraryPage"
-            className="self-center my-auto px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg transition-colors duration-200 font-medium"
-            ref={(el) => { if (el) cardsRef.current[1] = el; }}
-          >
-            All Libraries
-          </Link>
         </div>
       </nav>
     </div>

@@ -2,18 +2,20 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { use } from "react";
 import languageData from "../../data/languagedata.js";
 import BackButton from "../../components/BackButton";
 import SpotlightCard from "../../components/SpotlightCard";
 import ColorfulText from "../../components/ColorfulText";
+import DocsIcon from "../../components/DocsIcon";
 import { motion } from "framer-motion";
 
 export default function LanguagePage({
   params,
 }: {
-  params: { languageId: string };
+  params: Promise<{ languageId: string }>;
 }) {
-  const { languageId } = params;
+  const { languageId } = use(params);
   const language = languageData.find(
     (language: { id: string }) => language.id === languageId
   );
@@ -23,15 +25,15 @@ export default function LanguagePage({
   }
 
   return (
-    <div className="bg-orange-200">
-      <BackButton text="Back" className="rounded-full z-10 sticky top-10 -ml-1"/>
+    <div className="bg-white">
+      <BackButton text="Back" className="rounded-full -ml-1"/>
       <SpotlightCard
         className="custom-spotlight-card w-[90%] p-5 my-5 mx-auto flex flex-wrap items-center justify-center"
         spotlightColor="rgba(0, 229, 255, 0.2)"
       >
         <div className="mx-auto">
           <img
-            src={language.logo}
+            src={language.logo.startsWith('/') ? language.logo : `/${language.logo}`}
             alt={language.name}
             className="w-100 h-100 p-5"
           />
@@ -44,7 +46,7 @@ export default function LanguagePage({
               animate={{ opacity: 0.5 }}
               transition={{ duration: 1 }}
             />
-            <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold text-center text-white relative z-2 font-sans">
+            <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold text-center text-black relative z-2 font-sans">
               <ColorfulText text={language.name} />{" "}
             </h1>
           </div>
@@ -55,7 +57,7 @@ export default function LanguagePage({
             alt={language.founders[0].name}
             className="w-120 h-120 rounded-full hover:border-3 hover:border-white hover:shadow-md hover:shadow-white hover:rounded-none hover:translate-0.5 duration:250 transition-all ease-in-out"
           ></img>
-          <p className="text-white text-4xl text-center font-semibold mt-2">
+          <p className="text-blacktext-4xl text-center font-semibold mt-2">
             {language.founders[0].name}
           </p>
         </div>
@@ -65,7 +67,7 @@ export default function LanguagePage({
       <br />
       {language.founders[0].twitter || language.founders[0].linkedin || language.founders[0].github ? 
       <div className="flex flex-wrap items-center justify-center my-5 mx-auto">
-        <h2 className="text-4xl text-center font-semibold">
+        <h2 className="text-4xl text-center font-semibold text-black">
           Founder's Socials ➣&nbsp;
         </h2>
         {language.founders[0]?.twitter ? 
@@ -184,27 +186,23 @@ export default function LanguagePage({
       <br />
       <div className="flex flex-wrap items-center justify-center my-5">
         <Link href={language.official_docs}>
-          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-white hover:invert-100 dark:text-neutral-200 transition duration-200 mx-4">
-            <img
-              src="https://www.svgrepo.com/show/97315/documents-symbol.svg"
-              alt="Github"
-              className="w-6 h-6 inline-block mr-2"
-            />
+          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-black hover:text-white transition duration-200 mx-4 group">
+            <DocsIcon className="w-6 h-6 inline-block mr-2 group-hover:text-white" />
             Official Docs
           </button>
         </Link>
         <Link href={language.github}>
-          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-white hover:invert-100 dark:text-neutral-200 transition duration-200 mx-4">
+          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-black hover:text-white transition duration-200 mx-4 group">
             <img
               src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
               alt="Github"
-              className="w-6 h-6 inline-block mr-2"
+              className="w-6 h-6 inline-block mr-2 group-hover:invert"
             />
             Github
           </button>
         </Link>
         <Link href={`/LanguagePage/${languageId}/libraries`}>
-          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-white hover:invert-100 dark:text-neutral-200 transition duration-200 mx-4">
+          <button className="shadow-[inset_0_0_0_2px_#616467] text-black px-12 py-4 rounded-full tracking-widest uppercase font-bold bg-transparent hover:bg-black hover:text-white transition duration-200 mx-4">
             View {language.name} Libraries
           </button>
         </Link>

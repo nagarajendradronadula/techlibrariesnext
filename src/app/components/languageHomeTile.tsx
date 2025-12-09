@@ -23,20 +23,21 @@ export default function LanguageHomeTile({
   return (
     <div>
       <Link
-        className={`w-${width} h-${height} p-4 border-t-1 border-l-1 border-r-2 border-b-2 bg-orange-100 border-stone-200 shadow-md shadow-stone-300 flex flex-col items-center justify-center text-center ${
+        className={`p-4 border-t-1 border-l-1 border-r-2 border-b-2 bg-gray-700 border-stone-200 shadow-md shadow-stone-300 flex flex-col items-center justify-center text-center ${
           isHovered
-            ? "hover:shadow-2xl hover:translate-0.5 duration-150 transition-all ease-in-out"
+            ? "hover:shadow-2xl hover:scale-110 duration-150 transition-all ease-in-out"
             : ""
         } cursor-pointer rounded-2xl ${className}`}
         href="/LanguagePage/[languageId]"
         as={`/LanguagePage/${languageId}`}
+        style={{ transformStyle: 'preserve-3d', width: `${width * 5}px`, height: `${height * 5}px` }}
       >
         <img
           src={languageLogo}
           alt={languageName}
-          className="w-20 h-20 m-5"
+          className="w-32 h-32 m-5"
         ></img>
-        <p className="text-2xl font-semibold m-5">{languageName}</p>
+        <p className="text-4xl font-semibold m-5">{languageName}</p>
       </Link>
     </div>
   );

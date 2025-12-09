@@ -1,8 +1,8 @@
-const pythonLibraries = require("./libraries/python.json");
-const javaLibraries = require("./libraries/java.json");
-const cLibraries = require("./libraries/c.json");
-const cppLibraries = require("./libraries/cpp.json");
-const javascriptLibraries = require("./libraries/javascript.json");
+import pythonLibraries from "./libraries/python.json";
+import javaLibraries from "./libraries/java.json";
+import cLibraries from "./libraries/c.json";
+import cppLibraries from "./libraries/cpp.json";
+import javascriptLibraries from "./libraries/javascript.json";
 
 const libraries = [
   { id: "Python", ...pythonLibraries },
