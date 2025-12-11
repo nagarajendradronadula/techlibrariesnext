@@ -1,10 +1,17 @@
-'use client'
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { use } from "react";
 import libraries from "../../data/libraries.js";
 import BackButton from "@/app/components/BackButton"
+
+export async function generateStaticParams() {
+  const allLibraries = [];
+  for (const langData of libraries) {
+    const libs = Object.values(langData).filter(item => Array.isArray(item) || (typeof item === 'object' && item !== null && 'id' in item)).flat();
+    allLibraries.push(...libs);
+  }
+  return allLibraries.map((lib: any) => ({ libraryId: lib.id }));
+}
 
 export default function LibraryPage({
   params,

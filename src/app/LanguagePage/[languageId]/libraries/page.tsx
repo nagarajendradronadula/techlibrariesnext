@@ -1,10 +1,13 @@
-'use client'
-
 import Link from "next/link";
 import { use } from "react";
 import libraries from "../../../data/libraries.js";
+import languageData from "../../../data/languagedata.js";
 import BackButton from "@/app/components/BackButton";
 import CustomTile from "@/app/components/CustomTile"
+
+export async function generateStaticParams() {
+  return languageData.map((language) => ({ languageId: language.id }));
+}
 
 type Library = {
   id: string;

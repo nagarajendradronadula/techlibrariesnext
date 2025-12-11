@@ -1,5 +1,3 @@
-'use client'
-
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { use } from "react";
@@ -8,7 +6,11 @@ import BackButton from "../../components/BackButton";
 import SpotlightCard from "../../components/SpotlightCard";
 import ColorfulText from "../../components/ColorfulText";
 import DocsIcon from "../../components/DocsIcon";
-import { motion } from "framer-motion";
+import MotionImage from "../../components/MotionImage";
+
+export async function generateStaticParams() {
+  return languageData.map((language) => ({ languageId: language.id }));
+}
 
 export default function LanguagePage({
   params,
@@ -40,12 +42,7 @@ export default function LanguagePage({
         </div>
         <div className="mx-auto">
           <div className="flex items-center justify-center relative overflow-hidden">
-            <motion.img
-              className="object-cover absolute inset-0 [mask-image:radial-gradient(circle,transparent,black_80%)] pointer-events-none"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
-              transition={{ duration: 1 }}
-            />
+            <MotionImage />
             <h1 className="text-2xl md:text-5xl lg:text-7xl font-bold text-center text-black relative z-2 font-sans">
               <ColorfulText text={language.name} />{" "}
             </h1>
