@@ -21,7 +21,11 @@ export default function RootLayout({
   }, []);
 
   return (
-    <html>
+    <html lang="en">
+      <head>
+        <title>Tech Libraries - Programming Language Resources</title>
+        <meta name="description" content="Explore comprehensive programming language libraries and documentation" />
+      </head>
       <body className="bg-white">
         <CardNav
           logo=""

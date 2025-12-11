@@ -248,8 +248,8 @@ const CardNav: React.FC<CardNavProps> = ({
               }}
               className="pl-10 pr-4 py-2 rounded-full border-2 border-white/30 focus:border-cyan-500 focus:outline-none text-white placeholder-white w-64"
             />
-            {searchQuery.trim() && searchResults.length > 0 && (
-              <div className="fixed mt-14 w-64 bg-white rounded-lg shadow-2xl border-2 border-gray-300 max-h-60 overflow-y-auto">
+            {showResults && searchQuery.trim() && searchResults.length > 0 && (
+              <div className="fixed mt-14 w-64 bg-white rounded-lg shadow-2xl border-2 border-gray-300 max-h-60 overflow-y-auto z-[70]">
                 {searchResults.map((result) => (
                   <div
                     key={result.id}
@@ -257,6 +257,7 @@ const CardNav: React.FC<CardNavProps> = ({
                       router.push(`/LanguagePage/${result.id}`);
                       setSearchQuery("");
                       setSearchResults([]);
+                      setShowResults(false);
                     }}
                     className="block px-4 py-3 text-gray-800 hover:bg-gray-100 cursor-pointer transition-colors border-b border-gray-200 last:border-b-0"
                   >

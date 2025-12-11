@@ -33,7 +33,7 @@ export default function LanguagePage({
       >
         <div className="mx-auto">
           <img
-            src={language.logo.startsWith('/') ? language.logo : `/${language.logo}`}
+            src={language.logo?.startsWith('/') ? language.logo : `/${language.logo}`}
             alt={language.name}
             className="w-100 h-100 p-5"
           />
@@ -54,11 +54,11 @@ export default function LanguagePage({
         <div className="mx-auto">
           <img
             src={language.founders[0]?.image}
-            alt={language.founders[0].name}
+            alt={language.founders[0]?.name || 'Founder'}
             className="w-120 h-120 rounded-full hover:border-3 hover:border-white hover:shadow-md hover:shadow-white hover:rounded-none hover:translate-0.5 duration:250 transition-all ease-in-out"
-          ></img>
-          <p className="text-blacktext-4xl text-center font-semibold mt-2">
-            {language.founders[0].name}
+          />
+          <p className="text-black text-4xl text-center font-semibold mt-2">
+            {language.founders[0]?.name}
           </p>
         </div>
       </SpotlightCard>

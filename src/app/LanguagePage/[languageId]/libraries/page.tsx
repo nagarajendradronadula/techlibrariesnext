@@ -1,4 +1,7 @@
+'use client'
+
 import Link from "next/link";
+import { use } from "react";
 import libraries from "../../../data/libraries.js";
 import BackButton from "@/app/components/BackButton";
 import CustomTile from "@/app/components/CustomTile"
@@ -20,9 +23,9 @@ const typedLibraries = libraries as LanguageData[];
 export default function LanguageLibrariesPage({
   params,
 }: {
-  params: { languageId: string };
+  params: Promise<{ languageId: string }>;
 }) {
-  const { languageId } = params;
+  const { languageId } = use(params);
 
   // Find the language data by matching the id
   const languageData = typedLibraries.find(

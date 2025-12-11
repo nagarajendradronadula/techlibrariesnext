@@ -1,14 +1,17 @@
+'use client'
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { use } from "react";
 import libraries from "../../data/libraries.js";
 import BackButton from "@/app/components/BackButton"
 
 export default function LibraryPage({
   params,
 }: {
-  params: { libraryId: string };
+  params: Promise<{ libraryId: string }>;
 }) {
-  const { libraryId } = params;
+  const { libraryId } = use(params);
   let library: any = null;
   let language: string | null = null;
 

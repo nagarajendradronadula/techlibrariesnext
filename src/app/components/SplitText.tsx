@@ -3,9 +3,19 @@
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText as GSAPSplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
+gsap.registerPlugin(ScrollTrigger);
+
+// Check if SplitText is available (premium plugin)
+let GSAPSplitText: any = null;
+try {
+  GSAPSplitText = require("gsap/SplitText").SplitText;
+  if (GSAPSplitText) {
+    gsap.registerPlugin(GSAPSplitText);
+  }
+} catch (e) {
+  console.warn("GSAP SplitText plugin not available. Using fallback animation.");
+}
 
 export interface SplitTextProps {
   text: string;
@@ -49,10 +59,26 @@ const SplitText: React.FC<SplitTextProps> = ({
     
     animationCompletedRef.current = false;
 
+    // If SplitText is not available, use simple fade-in animation
+    if (!GSAPSplitText) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: "top 80%",
+          toggleActions: "play none none none",
+          once: true,
+        },
+      });
+      tl.from(el, { opacity: 0, y: 40, duration: 0.8, ease });
+      return () => {
+        tl.kill();
+      };
+    }
+
     const absoluteLines = splitType === "lines";
     if (absoluteLines) el.style.position = "relative";
 
-    let splitter: GSAPSplitText;
+    let splitter: any;
     try {
       splitter = new GSAPSplitText(el, {
         type: splitType,
