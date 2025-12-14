@@ -10,7 +10,7 @@ import LanguageHomeTile from "./components/languageHomeTile";
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="relative min-h-screen w-full">
+    <div className="relative min-h-screen w-full bg-white">
       <BackgroundBeamsWithCollision className="absolute inset-0 -z-full">
         <div></div>
       </BackgroundBeamsWithCollision>
