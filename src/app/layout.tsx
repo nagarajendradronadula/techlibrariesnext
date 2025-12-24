@@ -1,46 +1,23 @@
-'use client'
-
 import "./globals.css";
 import languageData from "./data/languagedata";
-import CardNav from "./components/CardNav";
-import { useEffect, useState } from "react";
+import ClientLayout from "./components/ClientLayout";
+
+export const metadata = {
+  title: "Tech Libraries - Programming Language Resources",
+  description: "Explore comprehensive programming language libraries and documentation",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <html lang="en">
-      <head>
-        <title>Tech Libraries - Programming Language Resources</title>
-        <meta name="description" content="Explore comprehensive programming language libraries and documentation" />
-      </head>
       <body className="bg-white">
-        <CardNav
-          logo=""
-          logoAlt="Tech Libraries"
-          items={[]}
-          languageData={languageData}
-          baseColor="#1f2937"
-          menuColor="#fff"
-          buttonBgColor="#111"
-          buttonTextColor="#fff"
-          ease="power3.out"
-        />
-        <div className="bg-white pt-24">
+        <ClientLayout languageData={languageData}>
           {children}
-        </div>
+        </ClientLayout>
       </body>
     </html>
   );

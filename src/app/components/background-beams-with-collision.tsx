@@ -84,7 +84,7 @@ export const BackgroundBeamsWithCollision = ({
     <div
       ref={parentRef}
       className={cn(
-        "h-screen w-screen bg-gradient-to-b from-white to-neutral-100 relative flex items-center justify-center overflow-hidden",
+        "h-full w-screen bg-white relative flex items-center justify-center overflow-hidden",
         className
       )}
     >
@@ -246,7 +246,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
   }));
 
   return (
-    <div {...props} className={cn("absolute -z-50 h-2 w-2", props.className)}>
+    <div {...props} className={cn("absolute -z-50 h-2 w-2 h-full", props.className)}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -264,7 +264,7 @@ const Explosion = ({ ...props }: React.HTMLProps<HTMLDivElement>) => {
             opacity: 0,
           }}
           transition={{ duration: Math.random() * 1.5 + 0.5, ease: "easeOut" }}
-          className="absolute h-2 w-2 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500"
+          className="absolute h-3 w-3 rounded-full bg-gradient-to-b from-indigo-500 to-purple-500"
         />
       ))}
     </div>

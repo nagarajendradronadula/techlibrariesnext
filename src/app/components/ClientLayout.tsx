@@ -1,0 +1,41 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import CardNav from "./CardNav";
+
+export default function ClientLayout({
+  children,
+  languageData,
+}: {
+  children: React.ReactNode;
+  languageData: any[];
+}) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <CardNav
+        logo=""
+        logoAlt="Tech Libraries"
+        items={[]}
+        languageData={languageData}
+        baseColor="#1f2937"
+        menuColor="#fff"
+        buttonBgColor="#111"
+        buttonTextColor="#fff"
+        ease="power3.out"
+      />
+      <div className="bg-white pt-24">
+        {children}
+      </div>
+    </>
+  );
+}

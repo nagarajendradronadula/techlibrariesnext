@@ -43,10 +43,19 @@ export default function LanguageLibrariesPage({
     : [];
 
   return (
-    <div className="bg-white">
-      <BackButton text="Back" className="rounded-full z-50 sticky top-34 -ml-1"/>
-      <div className="mx-auto mb-5 flex justify-center items-center">
-      <CustomTile width={104} height={20} isHovered={false} path={`/LanguagePage/${languageId}`} name={`${languageId} Libraries`}  className="uppercase text-3xl font-semibold hover:scale-110 transition-transform duration-300 ease-in-out" />
+    <>
+      <BackButton text="Back" className="hidden sm:block rounded-full z-50 fixed top-36 left-28 text-sm sm:text-base"/>
+      <div className="bg-white px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 lg:pt-8">
+      <div className="mx-auto mb-5 flex justify-center items-center px-4">
+        <div className="block sm:hidden">
+          <CustomTile width={70} height={16} isHovered={false} path={`/LanguagePage/${languageId}`} name={`${languageId} Libraries`}  className="uppercase text-sm font-semibold hover:scale-110 transition-transform duration-300 ease-in-out !bg-black !text-white" />
+        </div>
+        <div className="hidden sm:block md:hidden">
+          <CustomTile width={85} height={18} isHovered={false} path={`/LanguagePage/${languageId}`} name={`${languageId} Libraries`}  className="uppercase text-lg font-semibold hover:scale-110 transition-transform duration-300 ease-in-out !bg-black !text-white" />
+        </div>
+        <div className="hidden md:block">
+          <CustomTile width={104} height={20} isHovered={false} path={`/LanguagePage/${languageId}`} name={`${languageId} Libraries`}  className="uppercase text-2xl lg:text-3xl font-semibold hover:scale-110 transition-transform duration-300 ease-in-out !bg-black !text-white" />
+        </div>
       </div>
       {languageLibraries.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
@@ -58,16 +67,24 @@ export default function LanguageLibrariesPage({
           </div>
         </div>
       ) : (
-        <ul className="flex flex-wrap justify-center items-center gap-4">
+        <ul className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-12 xl:gap-16 max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
           {languageLibraries.map((lib: any) => (
-            <li key={lib.id} className="m-3 p-3">
-              {/* <Link href={`/LibraryPage/${lib.id}`}>{lib.name}</Link> */}
-              <CustomTile width={80} height={32} isHovered={true} path={`/LibraryPage/${lib.id}`} name={lib.name} subName={lib.category}/>
+            <li key={lib.id} className="flex justify-center">
+              <div className="block sm:hidden">
+                <CustomTile width={35} height={28} isHovered={true} path={`/LibraryPage/${lib.id}`} name={lib.name} subName={lib.category}/>
+              </div>
+              <div className="hidden sm:block lg:hidden">
+                <CustomTile width={60} height={30} isHovered={true} path={`/LibraryPage/${lib.id}`} name={lib.name} subName={lib.category}/>
+              </div>
+              <div className="hidden lg:block">
+                <CustomTile width={65} height={28} isHovered={true} path={`/LibraryPage/${lib.id}`} name={lib.name} subName={lib.category}/>
+              </div>
             </li>
           ))}
         </ul>
       )}
       <Link href={`/LanguagePage/${languageId}`}>⬅ Back to {languageId}</Link>
-    </div>
+      </div>
+    </>
   );
 }

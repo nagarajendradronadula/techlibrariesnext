@@ -31,7 +31,7 @@ function LibraryContent() {
   }, [searchQuery]);
   return (
     <div className="bg-white min-h-screen p-8">
-      <BackButton text="Back" className="rounded-full z-50 sticky top-34f -ml-1"/>
+      <BackButton text="Back"/>
       <h1 className="text-4xl font-bold text-center mb-8 text-black">
         {searchQuery ? `Search Results for &quot;${searchQuery}&quot;` : 'All Libraries'}
       </h1>

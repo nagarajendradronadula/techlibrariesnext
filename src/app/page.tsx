@@ -47,7 +47,7 @@ export default function Home() {
             ))}
           </div>
           <p className="text-center text-black m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 text-base sm:text-lg md:text-xl lg:text-2xl cursor-default"><span className="relative pb-1 inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">More languages coming soon...</span></p>
-          <p className="text-center text-black m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 text-base sm:text-lg md:text-xl lg:text-2xl cursor-default"><span className="relative pb-1 inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">Please view this site in PC or Laptop. Mobile Version coming soon...</span></p>
+          {/* <p className="text-center text-black m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 text-base sm:text-lg md:text-xl lg:text-2xl cursor-default"><span className="relative pb-1 inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">Please view this site in PC or Laptop. Mobile Version coming soon...</span></p> */}
         </div>
     </div>
   );
