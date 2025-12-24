@@ -7,6 +7,7 @@ import SpotlightCard from "../../components/SpotlightCard";
 import ColorfulText from "../../components/ColorfulText";
 import DocsIcon from "../../components/DocsIcon";
 import MotionImage from "../../components/MotionImage";
+import AdSense from "../../components/AdSense";
 
 export async function generateStaticParams() {
   return languageData.map((language) => ({ languageId: language.id }));
@@ -113,6 +114,9 @@ export default function LanguagePage({
       <br />
       <br />
       <br />
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
+      </div>
       <SpotlightCard
         className="custom-spotlight-card w-[95%] sm:w-[90%] p-3 sm:p-5 my-5 mx-auto"
         spotlightColor="rgba(0, 229, 255, 0.2)"
@@ -139,6 +143,9 @@ export default function LanguagePage({
       <br />
       <br />
       <br />
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
+      </div>
       <SpotlightCard
         className="custom-spotlight-card w-[95%] sm:w-[90%] p-3 sm:p-5 my-5 mx-auto tracking-wide sm:tracking-widest text-justify"
         spotlightColor="rgba(0, 229, 255, 0.2)"

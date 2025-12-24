@@ -4,6 +4,7 @@ import libraries from "../../../data/libraries.js";
 import languageData from "../../../data/languagedata.js";
 import BackButton from "@/app/components/BackButton";
 import CustomTile from "@/app/components/CustomTile"
+import AdSense from "@/app/components/AdSense";
 
 export async function generateStaticParams() {
   return languageData.map((language) => ({ languageId: language.id }));
@@ -57,6 +58,11 @@ export default function LanguageLibrariesPage({
           <CustomTile width={104} height={20} isHovered={false} path={`/LanguagePage/${languageId}`} name={`${languageId} Libraries`}  className="uppercase text-2xl lg:text-3xl font-semibold hover:scale-110 transition-transform duration-300 ease-in-out !bg-black !text-white" />
         </div>
       </div>
+      
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
+      </div>
+      
       {languageLibraries.length === 0 ? (
         <div className="flex flex-col items-center justify-center min-h-[60vh] px-4">
           <div className="text-center space-y-4">
@@ -83,6 +89,11 @@ export default function LanguageLibrariesPage({
           ))}
         </ul>
       )}
+      
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
+      </div>
+      
       <Link href={`/LanguagePage/${languageId}`}>⬅ Back to {languageId}</Link>
       </div>
     </>

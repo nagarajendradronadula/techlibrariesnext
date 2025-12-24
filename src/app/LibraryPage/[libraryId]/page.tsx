@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { use } from "react";
 import libraries from "../../data/libraries.js";
 import BackButton from "@/app/components/BackButton"
+import AdSense from "@/app/components/AdSense";
 
 export async function generateStaticParams() {
   const allLibraries = [];
@@ -46,6 +47,10 @@ export default function LibraryPage({
       <div className="mb-6 sm:mb-8">
         <p className="text-sm sm:text-base text-gray-800 leading-relaxed mb-4">{library.story}</p>
         <p className="text-sm sm:text-base text-gray-800 leading-relaxed">{library.description}</p>
+      </div>
+
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
       </div>
 
       {library.installation && (
@@ -99,6 +104,10 @@ export default function LibraryPage({
           ))}
         </div>
       )}
+
+      <div className="max-w-4xl mx-auto my-8">
+        <AdSense />
+      </div>
 
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 justify-center">
         <Link href={library.references.official_docs ?? "/"} className="px-4 sm:px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-center text-sm sm:text-base">
