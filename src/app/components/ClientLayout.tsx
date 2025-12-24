@@ -23,7 +23,7 @@ export default function ClientLayout({
   return (
     <>
       <CardNav
-        logo=""
+        logo="/ChatGPT_Image_Dec_24__2025__11_21_18_PM-removebg-preview.png"
         logoAlt="Tech Libraries"
         items={[]}
         languageData={languageData}

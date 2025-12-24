@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FiSearch } from "react-icons/fi";
+import Image from "next/image";
 
 type CardNavLink = {
   label: string;
@@ -39,6 +40,8 @@ export interface CardNavProps {
 }
 
 const CardNav: React.FC<CardNavProps> = ({
+  logo,
+  logoAlt = "Logo",
   items,
   languageData = [],
   className = "",
@@ -244,9 +247,22 @@ const CardNav: React.FC<CardNavProps> = ({
 
           {/* Logo */}
           <div className="absolute left-1/2 -translate-x-1/2 logo-container flex items-center">
-            <Link href="/" className="flex items-center text-white hover:text-cyan-300 font-semibold text-base sm:text-lg md:text-xl transition-colors duration-200">
-              <span className="hidden sm:inline">Tech Libraries</span>
-              <span className="sm:hidden text-sm">TL</span>
+            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity duration-200">
+              {logo ? (
+                <Image
+                  src={logo}
+                  alt={logoAlt}
+                  width={120}
+                  height={40}
+                  className="h-8 sm:h-10 w-auto object-contain"
+                  priority
+                />
+              ) : (
+                <span className="text-white font-semibold text-base sm:text-lg md:text-xl">
+                  <span className="hidden sm:inline">Tech Libraries</span>
+                  <span className="sm:hidden text-sm">TL</span>
+                </span>
+              )}
             </Link>
           </div>
 
