@@ -12,6 +12,9 @@ export const metadata = {
   publisher: "Tech Libraries",
   robots: "index, follow",
   viewport: "width=device-width, initial-scale=1",
+  other: {
+    "google-adsense-account": "ca-pub-7391347597198934",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
