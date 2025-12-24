@@ -33,7 +33,7 @@ export default function ClientLayout({
         buttonTextColor="#fff"
         ease="power3.out"
       />
-      <div className="bg-white pt-24">
+      <div className="bg-white pt-16 sm:pt-20 md:pt-24 lg:pt-28">
         {children}
       </div>
     </>

@@ -212,7 +212,7 @@ const CardNav: React.FC<CardNavProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`card-nav-container mx-auto w-[95%] max-w-[1000px] ${className} ${isExpanded || isSearchOpen ? "rounded-2xl" : "rounded-full"} shadow-md shadow-gray-600 duration-25 ease-in-out fixed top-2 sm:top-5 left-1/2 -translate-x-1/2 z-50`}
+      className={`card-nav-container mx-auto w-[95%] max-w-[1000px] ${className} ${isExpanded || isSearchOpen ? "rounded-2xl" : "rounded-full"} shadow-md shadow-gray-600 duration-25 ease-in-out fixed top-2 sm:top-3 md:top-5 left-1/2 -translate-x-1/2 z-50`}
       style={{ backgroundColor: baseColor }}
     >
       <nav
@@ -220,7 +220,7 @@ const CardNav: React.FC<CardNavProps> = ({
         className="card-nav rounded-4xl block h-[60px] p-0 shadow-md relative"
         style={{ backgroundColor: baseColor }}
       >
-        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 px-2 sm:px-4 z-[2]">
+        <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 px-3 sm:px-4 md:px-6 z-[2]">
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMenu}
@@ -233,20 +233,20 @@ const CardNav: React.FC<CardNavProps> = ({
           </button>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex gap-2 lg:gap-3">
-            <Link href="/" className="px-3 lg:px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-xs lg:text-sm border border-white/30">
+          <div className="hidden md:flex gap-1 lg:gap-2 xl:gap-3">
+            <Link href="/" className="px-2 lg:px-3 xl:px-4 py-1.5 lg:py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-xs lg:text-sm border border-white/30">
               All Languages
             </Link>
-            <Link href="/LibraryPage" className="px-3 lg:px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-xs lg:text-sm border border-white/30">
+            <Link href="/LibraryPage" className="px-2 lg:px-3 xl:px-4 py-1.5 lg:py-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 font-medium text-xs lg:text-sm border border-white/30">
               All Libraries
             </Link>
           </div>
 
           {/* Logo */}
           <div className="absolute left-1/2 -translate-x-1/2 logo-container flex items-center">
-            <Link href="/" className="flex items-center text-white hover:text-cyan-300 font-semibold text-lg sm:text-xl transition-colors duration-200">
+            <Link href="/" className="flex items-center text-white hover:text-cyan-300 font-semibold text-base sm:text-lg md:text-xl transition-colors duration-200">
               <span className="hidden sm:inline">Tech Libraries</span>
-              <span className="sm:hidden">TL</span>
+              <span className="sm:hidden text-sm">TL</span>
             </Link>
           </div>
 
@@ -288,10 +288,10 @@ const CardNav: React.FC<CardNavProps> = ({
                   }
                 }
               }}
-              className="pl-10 pr-4 py-2 rounded-full border-2 border-white/30 focus:border-cyan-500 focus:outline-none text-white placeholder-white w-48 lg:w-64"
+              className="pl-10 pr-4 py-2 rounded-full border-2 border-white/30 focus:border-cyan-500 focus:outline-none text-white placeholder-white w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 text-sm"
             />
             {showResults && searchQuery.trim() && searchResults.length > 0 && (
-              <div className="absolute mt-2 w-48 lg:w-64 bg-white rounded-lg shadow-2xl border-2 border-gray-300 max-h-60 overflow-y-auto z-[70]">
+              <div className="absolute mt-2 w-32 sm:w-40 md:w-48 lg:w-56 xl:w-64 bg-white rounded-lg shadow-2xl border-2 border-gray-300 max-h-60 overflow-y-auto z-[70]">
                 {searchResults.map((result) => (
                   <div
                     key={result.id}
@@ -313,10 +313,10 @@ const CardNav: React.FC<CardNavProps> = ({
           {/* Search Icon - Mobile */}
           <button
             onClick={() => setIsSearchOpen(!isSearchOpen)}
-            className="sm:hidden p-2 text-white hover:text-cyan-300 transition-colors"
+            className="sm:hidden p-1.5 text-white hover:text-cyan-300 transition-colors"
             aria-label="Toggle search"
           >
-            <FiSearch size={20} />
+            <FiSearch size={18} />
           </button>
         </div>
 
