@@ -53,6 +53,15 @@ export default function Home() {
           </div>
           
           <p className="text-center text-black m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 text-base sm:text-lg md:text-xl lg:text-2xl cursor-default"><span className="relative pb-1 inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">More languages coming soon...</span></p>
+          
+          <footer className="flex items-center justify-center mt-8 mb-4">
+            <img 
+              src="/ChatGPT_Image_Dec_24__2025__11_21_18_PM-removebg-preview.png" 
+              alt="Tech Libraries Logo" 
+              className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem]"
+            />
+          </footer>
+          
           {/* <p className="text-center text-black m-3 sm:m-4 md:m-5 p-3 sm:p-4 md:p-5 text-base sm:text-lg md:text-xl lg:text-2xl cursor-default"><span className="relative pb-1 inline-block after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-black after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:transition-all after:duration-300 hover:after:w-full">Please view this site in PC or Laptop. Mobile Version coming soon...</span></p> */}
         </div>
     </div>

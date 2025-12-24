@@ -67,7 +67,7 @@ export default function RootLayout({
         />
         <meta name="theme-color" content="#3b82f6" />
         <meta name="msapplication-TileColor" content="#3b82f6" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/ChatGPT_Image_Dec_24__2025__11_21_18_PM-removebg-preview.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
         <Script

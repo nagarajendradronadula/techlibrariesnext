@@ -246,23 +246,22 @@ const CardNav: React.FC<CardNavProps> = ({
           </div>
 
           {/* Logo */}
-          <div className="absolute left-1/2 -translate-x-1/2 logo-container flex items-center">
-            <Link href="/" className="flex items-center hover:opacity-80 transition-opacity duration-200">
+          <div className="absolute left-1/2 -translate-x-1/2 logo-container flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200">
               {logo ? (
                 <Image
                   src={logo}
                   alt={logoAlt}
-                  width={120}
+                  width={40}
                   height={40}
-                  className="h-8 sm:h-10 w-auto object-contain"
+                  className="h-8 sm:h-10 w-8 sm:w-10 object-contain"
                   priority
                 />
-              ) : (
-                <span className="text-white font-semibold text-base sm:text-lg md:text-xl">
-                  <span className="hidden sm:inline">Tech Libraries</span>
-                  <span className="sm:hidden text-sm">TL</span>
-                </span>
-              )}
+              ) : null}
+              <span className="text-white font-semibold text-base sm:text-lg md:text-xl">
+                <span className="hidden sm:inline">TECH LIBRARIES</span>
+                <span className="sm:hidden text-sm">TL</span>
+              </span>
             </Link>
           </div>
 
